@@ -15,16 +15,22 @@
 char *read_command(void)
 {
 	/* The buffer to store the user's input */
-	char *cmd = NULL;
+	char *cmd_line = NULL;
 	/* The initial size of the buffer */
 	size_t buffer_size = 0;
 
+	/*This function is for print the '$' character followed by a space.*/
+	print_shell_prompt();
+
 	/* Attempt to read a line of input from the user */
-	if (getline(&cmd, &buffer_size, stdin) == -1)
+	if (getline(&cmd_line, &buffer_size, stdin) == -1)
 	{
-		perror("Failed to read command");
-		exit(EXIT_FAILURE);
+		free(cmd_line);
+		return (NULL);
 	}
 
-	return (cmd);
+	return (cmd_line);
 }
+
+
+

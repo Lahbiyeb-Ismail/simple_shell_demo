@@ -3,7 +3,7 @@
 /**
  * free_memory - Frees the memory allocated for the command and its tokens.
  *
- * Description: TThis function takes a command string and an array of
+ * Description: This function takes a command string and an array of
  * tokens, both dynamically allocated, and frees the memory associated
  * with them. It iterates through the array of tokens and frees each
  * individual token before freeing the array itself. Finally, it frees

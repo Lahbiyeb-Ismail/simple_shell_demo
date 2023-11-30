@@ -16,26 +16,41 @@
 int main(void)
 {
 	/* Buffer to store the user's input cmd */
-	char *cmd = NULL;
+	char *cmd_line = NULL;
 	/* Array to store the tokens of the cmd */
-	char **argv = NULL;
+	/*char **argv = NULL;*/
 	/* Number of tokens in the command */
-	size_t argc;
-	int i = 0;
+	/*size_t argc;*/
 
-	printf("$ ");
+	int exit_status = 0;
 
-	/* Prompt user and read the command */
-	cmd = read_command();
+	do {
+		/* Prompt user and read the command */
+		cmd_line = read_command();
 
-	/* Tokenize (split) the command and get the array of tokens */
-	argv = tokenize_command(cmd, &argc);
+		if (!cmd_line)
+		{
+			/* Print a new line befor exit if we are in the interactive mode */
+			if (isatty(STDIN_FILENO))
+				write(STDOUT_FILENO, "\n", 1);
 
-	while (argv[i])
-		printf("%s\n", argv[i++]);
+			return (exit_status);
+		}
+
+		free(cmd_line);
+
+
+		/* Tokenize (split) the command and get the array of tokens */
+		/*argv = tokenize_command(cmd_line, &argc);*/
+
+		/* Execute the command and get the exit status */
+		/*exit_status = exec_command(argv);*/
+
+	} while (1);
+
 
 	/* Free the allocated memory */
-	free_memory(cmd, argv);
+	/*free_memory(cmd_line, argv);*/
 
-	return (0);
+	return (exit_status);
 }
