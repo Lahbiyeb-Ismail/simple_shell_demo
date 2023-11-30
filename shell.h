@@ -9,9 +9,13 @@
 #include <sys/wait.h>
 
 char *read_command(void);
-char **tokenize_command(char *cmd, size_t *argc);
-void free_memory(char *cmd, char **argv);
-int exec_command(char **argv);
+char **tokenize_command(char *cmd);
+void free_memory(char **argv);
+int exec_command(char **cmd, char **argv, char **env);
 void print_shell_prompt(void);
+
+int _strlen(char *s);
+char *_strdup(char *str);
+char *_strcpy(char *dest, char *src);
 
 #endif

@@ -1,7 +1,5 @@
 #include "shell.h"
 
-void if_error_exit(char **argv);
-
 /**
  * tokenize_command - Tokenize a command string into an array of tokens.
  *
@@ -10,76 +8,60 @@ void if_error_exit(char **argv);
  * It returns an array of tokens and updates the provided argument 'argc'
  * with the number of tokens.
  *
- * @cmd: The command string to tokenize.
- * @argc: Pointer to a size_t variable to store the number of tokens.
+ * @cmd_line: The command string to tokenize.
  *
  * Return: An array of dynamically allocated strings representing tokens.
  *
 */
 
-char **tokenize_command(char *cmd, size_t *argc)
+char **tokenize_command(char *cmd_line)
 {
-	/* Create a copy of the command for tokenization */
-	char *cmd_cpy = strdup(cmd);
-	/* Tokenize the original command */
-	char *token = strtok(cmd, " \n");
+	char *cmd_cpy = NULL, *token = NULL, *delim = " \t\n";
 	/* Array to store the tokens */
-	char **argv = NULL;
+	char **cmd = NULL;
 	/* Counter for the number of tokens */
 	size_t count = 0;
 	size_t i = 0;
 
+	if (!cmd_line)
+		return (NULL);
+	/* Create a copy of the command for tokenization */
+	cmd_cpy = _strdup(cmd_line);
+	/* Tokenize the command copy*/
+	token = strtok(cmd_cpy, delim);
+	if (!token)
+	{
+		free(cmd_line), cmd_line = NULL;
+		free(cmd_cpy), cmd_cpy = NULL;
+		return (NULL);
+	}
 	/* Count the number of tokens int the original command */
 	while (token)
 	{
-		token = strtok(NULL, " \n");
 		count++;
+		token = strtok(NULL, delim);
 	}
+	free(cmd_cpy), cmd_cpy = NULL;
 
-	/* Update the provided 'argc' with the token count */
-	*argc = count;
 	/* Allocate memory for the array of tokens */
-	argv = malloc(sizeof(char *) * count);
+	cmd = malloc(sizeof(char *) * (count + 1));
 	/* Check if the memory allocation failed */
-	if_error_exit(argv);
-
-		/* Reset token to the start of the copied command */
-	token = strtok(cmd_cpy, " \n");
-
+	if (!cmd)
+	{
+		free(cmd_line), cmd_line = NULL;
+		return (NULL);
+	}
+	/* Reset token to the start of the copied command */
+	token = strtok(cmd_line, delim);
 	/* Fill the 'argv' array with token strings*/
-	for (; i < count; i++)
+	while (token)
 	{
-		argv[i] = strdup(token);
-		/* Check if the memory allocation failed */
-		if (!argv[i])
-		{
-			perror("Failed to allocate memory");
-			exit(EXIT_FAILURE);
-		}
-		token = strtok(NULL, " \n");
+		cmd[i] = _strdup(token);
+		token = strtok(NULL, delim);
+		i++;
 	}
-
+	free(cmd_line), cmd_line = NULL;
 	/* Set the last element of the tokens array to Null*/
-	argv[count] = NULL, free(cmd_cpy);
-	return (argv);
-}
-
-/**
- * if_error_exit - Helper function
- *
- * Description: This function check the memory is allocated correctly
- *
- * @argv: Array to store the tokens of the cmd
- *
- * Return: void
- *
-*/
-
-void if_error_exit(char **argv)
-{
-	if (!argv)
-	{
-		perror("Failed to allocate memory");
-		exit(EXIT_FAILURE);
-	}
+	cmd[i] = NULL;
+	return (cmd);
 }

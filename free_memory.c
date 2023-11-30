@@ -9,23 +9,23 @@
  * individual token before freeing the array itself. Finally, it frees
  * the memory used for the original command string.
  *
- * @cmd: The dynamically allocated command string to be freed.
  * @argv: The array of dynamically allocated tokens to be freed.
  *
  * Return: void
  *
 */
 
-void free_memory(char *cmd, char **argv)
+void free_memory(char **argv)
 {
-	size_t i = 0;
+	size_t i;
+
+	if (!argv)
+		return;
 
 	/* Iterate through the array of tokens and free each individual token */
-	for (; argv[i]; i++)
-		free(argv[i]);
+	for (i = 0; argv[i]; i++)
+		free(argv[i]), argv[i] = NULL;
 
 	/* Free the array of tokens */
-	free(argv);
-	/* Free the original command string */
-	free(cmd);
+	free(argv), argv = NULL;
 }

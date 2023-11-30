@@ -6,16 +6,19 @@
  * Description: This function creates a child process to execute
  * the command specified by the array of tokens using execve.
  *
- * @argv: Array of tokens representing the command and its arguments.
+ * @cmd: Array of tokens representing the command and its arguments.
+ * @argv: An array of strings representing the command-line arguments.
+ * @env: An array of strings representing the environment variables.
  *
  * Return: 0 on success, -1 on failure.
  *
 */
 
-int exec_command(char **argv)
+int exec_command(char **cmd, char **argv, char **env)
 {
 	pid_t pid;
 	int ret_val;
+	int status;
 
 	pid = fork();
 
@@ -24,25 +27,20 @@ int exec_command(char **argv)
 
 	if (pid == 0)
 	{
-		ret_val = execve(argv[0], argv, NULL);
+		ret_val = execve(cmd[0], cmd, env);
 
 		if (ret_val == -1)
 		{
-			perror("Error in execve");
-			exit(EXIT_FAILURE);
+			perror(argv[0]);
+			free_memory(cmd);
+			exit(127);
 		}
 	}
 	else
 	{
-		int status;
-
 		waitpid(pid, &status, 0);
-
-		if (WIFEXITED(status))
-			return (WEXITSTATUS(status));
-		else
-			return (-1);
+		free_memory(cmd);
 	}
 
-	return (0);
+	return (WEXITSTATUS(status));
 }

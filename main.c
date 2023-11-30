@@ -9,20 +9,24 @@
  * of tokens, and then performs any additional processing required.
  * Finally, it frees the allocated memory before exiting.
  *
+ * @argc: The number of command-line arguments.
+ * @argv: An array of strings representing the command-line arguments.
+ * @env: An array of strings representing the environment variables.
+ *
+ *
  * Return: 0 in success execution
  *
 */
 
-int main(void)
+int main(int argc, char **argv, char **env)
 {
 	/* Buffer to store the user's input cmd */
 	char *cmd_line = NULL;
 	/* Array to store the tokens of the cmd */
-	/*char **argv = NULL;*/
-	/* Number of tokens in the command */
-	/*size_t argc;*/
+	char **cmd = NULL;
 
 	int exit_status = 0;
+	(void)argc;
 
 	do {
 		/* Prompt user and read the command */
@@ -37,20 +41,14 @@ int main(void)
 			return (exit_status);
 		}
 
-		free(cmd_line);
-
-
 		/* Tokenize (split) the command and get the array of tokens */
-		/*argv = tokenize_command(cmd_line, &argc);*/
+		cmd = tokenize_command(cmd_line);
+
+		if (!cmd)
+			continue;
 
 		/* Execute the command and get the exit status */
-		/*exit_status = exec_command(argv);*/
-
+		exit_status = exec_command(cmd, argv, env);
 	} while (1);
 
-
-	/* Free the allocated memory */
-	/*free_memory(cmd_line, argv);*/
-
-	return (exit_status);
 }
