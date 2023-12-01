@@ -26,7 +26,7 @@ int exec_command(char **cmd, char **argv, int cmd_idx)
 	{
 		print_shell_error(argv[0], cmd[0], cmd_idx);
 		free_memory(cmd);
-		exit(127);
+		return (127);
 	}
 
 	pid = fork();
