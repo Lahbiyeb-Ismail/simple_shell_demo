@@ -27,25 +27,20 @@
 
 char *_strdup(char *str)
 {
-	char *s;
-	int i = 0, len = 0;
+	char *dup;
+	int len = 0;
 
 	if (str == NULL)
 		return (NULL);
 
-	while (str[len] != '\0')
-		len++;
+	len = _strlen(str);
 
-	s = malloc((len + 1) * sizeof(char));
+	dup = malloc((len + 1) * sizeof(char));
 
-	if (s != NULL)
+	if (dup != NULL)
 	{
-		for (i = 0; i <= len + 1; i++)
-			s[i] = str[i];
-
-		s[i] = '\0';
-
-		return (s);
+		_strcpy(dup, str);
+		return (dup);
 	}
 
 	return (NULL);
@@ -98,16 +93,86 @@ char *_strcpy(char *dest, char *src)
 	int i, j, len = 0;
 
 	for (j = 0; src[j] != '\0'; j++)
-	{
 		len++;
-	}
 
 	for (i = 0; i <= len; i++)
-	{
 		dest[i] = src[i];
-	}
-
 
 	return (dest);
 }
 
+
+/**
+ * _strcmp - Entry point
+ *
+ *  * @s1: char array
+ *  * @s2: char array
+ *
+ * Description: Function that compare two character arrays
+ * or strings terminated by null value (C-strings) lexicographically.
+ *
+ * Prototype: int _strcmp(char *s1, char *s2);
+ *
+ *
+ *
+ * Return: the pointer to the copied string.
+ *
+ *
+ */
+
+int _strcmp(char *s1, char *s2)
+{
+	int i = 0, ret_val = 0;
+
+	while (s1[i] != '\0')
+	{
+		if (s1[i] != s2[i])
+		{
+			ret_val = s1[i] - s2[i];
+			break;
+		}
+
+		i++;
+	}
+
+	return (ret_val);
+}
+
+/**
+ * _strcat - Entry point
+ *
+ *  * @dest: pointer to a string
+ *  * @src: pointer to a string
+ *
+ * Description: Function that concatenates two strings.
+ *
+ * Prototype: char *_strcat(char *dest, char *src);
+ *
+ * This function appends the src string to the dest string,
+ * overwriting the terminating null byte (\0) at the end of dest
+ * and then adds a terminating null byte
+ *
+ * Returns a pointer to the resulting string dest
+ *
+ * Return: char
+ *
+ *
+ */
+
+char *_strcat(char *dest, char *src)
+{
+	int i = 0, j = 0;
+
+	while (dest[i] != '\0')
+		i++;
+
+	while (src[j] != '\0')
+	{
+		dest[i++] = src[j];
+		j++;
+	}
+
+	dest[i] = '\0';
+
+	return (dest);
+}

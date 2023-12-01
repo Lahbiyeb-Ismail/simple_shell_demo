@@ -11,21 +11,20 @@
  *
  * @argc: The number of command-line arguments.
  * @argv: An array of strings representing the command-line arguments.
- * @env: An array of strings representing the environment variables.
  *
  *
  * Return: 0 in success execution
  *
 */
 
-int main(int argc, char **argv, char **env)
+int main(int argc, char **argv)
 {
 	/* Buffer to store the user's input cmd */
 	char *cmd_line = NULL;
 	/* Array to store the tokens of the cmd */
 	char **cmd = NULL;
 
-	int exit_status = 0;
+	int exit_status = 0, cmd_idx = 0;
 	(void)argc;
 
 	do {
@@ -40,6 +39,7 @@ int main(int argc, char **argv, char **env)
 
 			return (exit_status);
 		}
+		cmd_idx++;
 
 		/* Tokenize (split) the command and get the array of tokens */
 		cmd = tokenize_command(cmd_line);
@@ -48,7 +48,7 @@ int main(int argc, char **argv, char **env)
 			continue;
 
 		/* Execute the command and get the exit status */
-		exit_status = exec_command(cmd, argv, env);
+		exit_status = exec_command(cmd, argv, cmd_idx);
 	} while (1);
 
 }
