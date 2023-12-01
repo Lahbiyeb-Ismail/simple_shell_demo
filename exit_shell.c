@@ -46,6 +46,7 @@ void exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx)
 	}
 
 	/* Free memory allocated for the command */
+	free(idx);
 	free_memory(cmd);
 
 	/* Exit the shell with the provided exit status  */
