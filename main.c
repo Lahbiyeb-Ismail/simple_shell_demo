@@ -48,7 +48,7 @@ int main(int argc, char **argv)
 			continue;
 
 		if (check_if_builtin_cmd(cmd[0]))
-			handle_builtin_cmd(cmd, exit_status);
+			handle_builtin_cmd(cmd, &exit_status);
 		else
 		/* Execute the command and get the exit status */
 			exit_status = exec_command(cmd, argv, cmd_idx);

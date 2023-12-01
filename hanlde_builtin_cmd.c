@@ -12,9 +12,13 @@
  * Return: void
  */
 
-void handle_builtin_cmd(char **cmd, int exit_status)
+void handle_builtin_cmd(char **cmd, int *exit_status)
 {
 	/* Check if the command is the "exit" built-in command */
 	if (_strcmp(cmd[0], "exit") == 0)
 		exit_shell(cmd, exit_status);
+
+	/* Check if the command is the "env" built-in command */
+	if (_strcmp(cmd[0], "env") == 0)
+		print_env(cmd, exit_status);
 }

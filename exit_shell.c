@@ -12,11 +12,11 @@
  * Return: void
  */
 
-void exit_shell(char **cmd, int exit_status)
+void exit_shell(char **cmd, int *exit_status)
 {
 	/* Free memory allocated for the command */
 	free_memory(cmd);
 
 	/* Exit the shell with the provided exit status  */
-	exit(exit_status);
+	exit(*exit_status);
 }
