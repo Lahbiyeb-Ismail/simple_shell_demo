@@ -23,6 +23,7 @@ int exec_command(char **cmd, char **argv, int cmd_idx);
 char *_getenv(char *name);
 char *_getpath(char *cmd);
 
+/***********************************/
 void rev_string(char *str, int strlen);
 int _strlen(char *s);
 int _strcmp(char *s1, char *s2);
