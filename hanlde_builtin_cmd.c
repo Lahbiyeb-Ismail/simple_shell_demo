@@ -7,18 +7,20 @@
  * command and executes the corresponding action.
  *
  * @cmd: Array of tokens representing the command and its arguments.
+ * @argv: An array of strings representing the command-line arguments.
  * @exit_status: The exit status of the previous command.
+ * @cmd_idx: Index of the command in the token array.
  *
  * Return: void
  */
 
-void handle_builtin_cmd(char **cmd, int *exit_status)
+void handle_builtin_cmd(char **cmd, char **argv, int *exit_status, int cmd_idx)
 {
 	/* Check if the command is the "exit" built-in command */
 	if (_strcmp(cmd[0], "exit") == 0)
-		exit_shell(cmd, exit_status);
+		exit_shell(cmd, argv, exit_status, cmd_idx);
 
 	/* Check if the command is the "env" built-in command */
-	if (_strcmp(cmd[0], "env") == 0)
+	else if (_strcmp(cmd[0], "env") == 0)
 		print_env(cmd, exit_status);
 }

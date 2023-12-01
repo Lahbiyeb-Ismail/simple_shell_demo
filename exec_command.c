@@ -12,9 +12,6 @@
  *
  * Return: 0 on success, -1 on failure.
  *
- *
- *
- *
 */
 
 int exec_command(char **cmd, char **argv, int cmd_idx)
