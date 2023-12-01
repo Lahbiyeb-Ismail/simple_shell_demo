@@ -32,5 +32,9 @@ char *_strcat(char *dest, char *src);
 
 char *_itoa(int num);
 
+int check_if_builtin_cmd(char *cmd);
+void handle_builtin_cmd(char **cmd, int exit_status);
+void exit_shell(char **cmd, int exit_status);
+
 
 #endif
