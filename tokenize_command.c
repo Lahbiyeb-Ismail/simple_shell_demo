@@ -60,8 +60,9 @@ char **tokenize_command(char *cmd_line)
 		token = strtok(NULL, delim);
 		i++;
 	}
-	free(cmd_line), cmd_line = NULL;
 	/* Set the last element of the tokens array to Null*/
+
+	free(cmd_line), cmd_line = NULL;
 	cmd[i] = NULL;
 	return (cmd);
 }

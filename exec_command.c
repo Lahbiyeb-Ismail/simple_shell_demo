@@ -25,6 +25,7 @@ int exec_command(char **cmd, char **argv, char **env)
 	if (pid < 0)
 		return (-1);
 
+ /* Child process */
 	if (pid == 0)
 	{
 		ret_val = execve(cmd[0], cmd, env);
