@@ -18,6 +18,8 @@ void free_memory(char **argv);
 
 char *read_command(void);
 char **tokenize_command(char *cmd);
+size_t tokens_count(char *cmd_line, char *delim);
+char **tokens_array(size_t count, char *cmd_line, char *delim, char *token);
 int exec_command(char **cmd, char **argv, int cmd_idx);
 
 char *_getenv(char *name);
