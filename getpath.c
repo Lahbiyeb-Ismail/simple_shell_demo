@@ -1,15 +1,18 @@
 #include "shell.h"
 
 /**
- * _getpath - Execute the command with its arguments
+ * _getpath - Get the full path of a command
  *
- * Description: This function creates a child process to execute
- * the command specified by the array of tokens using execve.
+ * Description: This function attempts to find the full path of a command by
+ * checking the directories listed in the PATH environment variable. If the
+ * command contains a slash ("/"), it checks whether it's an absolute or
+ * relative path and returns a duplicate of the command if it exists. If the
+ * command doesn't contain a slash, it searches for the command in each
+ * directory listed in the PATH variable.
  *
- * @cmd: Array of tokens representing the command and its arguments.
+ * @cmd: The command for which to find the full path.
  *
- * Return: A pointer to the full path of the command if found, NULL
- * otherwise.
+ * Return: A pointer to the full path of the command if found, NULL otherwise.
  */
 
 char *_getpath(char *cmd)
@@ -29,6 +32,7 @@ char *_getpath(char *cmd)
 			return (NULL);
 		}
 	}
+
 	path_val = _getenv("PATH");
 	if (!path_val)
 		return (NULL);
@@ -56,3 +60,36 @@ char *_getpath(char *cmd)
 	return (NULL);
 }
 
+/**
+ * check_command - Get the full path of a command
+ *
+ * Description: This function attempts to find the full path of a command by
+ * checking the directories listed in the PATH environment variable. If the
+ * command contains a slash ("/"), it checks whether it's an absolute or
+ * relative path and returns a duplicate of the command if it exists. If the
+ * command doesn't contain a slash, it searches for the command in each
+ * directory listed in the PATH variable.
+ *
+ * @cmd: The command for which to find the full path.
+ * @st: The command for which to find the full path.
+ *
+ * Return: A pointer to the full path of the command if found, NULL otherwise.
+ */
+
+char *check_command(char *cmd, struct stat st)
+{
+	size_t i;
+
+	for (i = 0; cmd[i]; i++)
+	{
+		if (cmd[i] == '/')
+		{
+			if (stat(cmd, &st) == 0)
+				return (_strdup(cmd));
+
+			return (NULL);
+		}
+	}
+
+	return (NULL);
+}

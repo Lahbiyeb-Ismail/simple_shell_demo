@@ -25,6 +25,7 @@ int exec_command(char **cmd, char **argv, int cmd_idx);
 
 char *_getenv(char *name);
 char *_getpath(char *cmd);
+char *check_command(char *cmd, struct stat st);
 
 /***********************************/
 void rev_string(char *str, int strlen);
