@@ -17,8 +17,7 @@
 void exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx)
 {
 	int exit_val = (*exit_status);
-	char *idx = _itoa(cmd_idx);
-	char *msg = "Illegal number";
+	char *err_msg = "Illegal number";
 
 	if (cmd[1])
 	{
@@ -26,27 +25,16 @@ void exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx)
 			exit_val = _atoi(cmd[1]);
 		else
 		{
-			write(STDERR_FILENO, argv[0], _strlen(argv[0]));
-			write(STDERR_FILENO, ": ", 2);
-			write(STDERR_FILENO, idx, _strlen(idx));
-			write(STDERR_FILENO, ": ", 2);
-			write(STDERR_FILENO, cmd[0], _strlen(cmd[0]));
-			write(STDERR_FILENO, ": ", 2);
-			write(STDERR_FILENO, msg, _strlen(msg));
-			write(STDERR_FILENO, ": ", 2);
-			write(STDERR_FILENO, cmd[1], _strlen(cmd[1]));
-			write(STDERR_FILENO, "\n", 1);
+			print_shell_error(argv[0], cmd_idx, cmd, err_msg);
 
-			free(idx);
 			free_memory(cmd);
-
 			(*exit_status) = 2;
+
 			return;
 		}
 	}
 
-	/* Free memory allocated for the command and idx */
-	free(idx);
+	/* Free memory allocated for the command*/
 	free_memory(cmd);
 
 	/* Exit the shell with the provided exit status  */

@@ -20,11 +20,12 @@ int exec_command(char **cmd, char **argv, int cmd_idx)
 	int ret_val;
 	int status;
 	char *cmd_path = NULL;
+	char *err_msg = "not found";
 
 	cmd_path = _getpath(cmd[0]);
 	if (!cmd_path)
 	{
-		print_shell_error(argv[0], cmd[0], cmd_idx);
+		print_shell_error(argv[0], cmd_idx, cmd, err_msg);
 		free_memory(cmd);
 		return (127);
 	}

@@ -12,9 +12,10 @@
 /*An array of strings representing the environment variables.*/
 extern char **environ;
 
-void print_shell_prompt(void);
-void print_shell_error(char *shell_name, char *cmd, int cmd_idx);
 void free_memory(char **argv);
+void print_shell_prompt(void);
+void print_shell_error(char *shell_name, int cmd_idx, char **cmd,
+	char *err_msg);
 
 char *read_command(void);
 char **tokenize_command(char *cmd);
@@ -39,6 +40,7 @@ int _atoi(char *s);
 int check_if_builtin_cmd(char *cmd);
 void handle_builtin_cmd(char **cmd, char **argv, int *exit_status, int cm_idx);
 void exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx);
+
 
 void print_env(char **cmd, int *exit_status);
 
