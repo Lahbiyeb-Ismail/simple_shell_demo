@@ -45,10 +45,11 @@ int _setenv(char *name, char *value, int overwrite)
 			return (-1);
 		}
 
+		free(new_env), new_env = NULL;
+
 		environ[env_count] = new_env_cpy;
 		environ[env_count + 1] = NULL;
 
-		free(new_env), new_env = NULL;
 		free(env_val), env_val = NULL;
 		return (0);
 	}
