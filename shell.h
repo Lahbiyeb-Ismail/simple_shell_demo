@@ -10,24 +10,8 @@
 #include <sys/stat.h>
 
 
-/**
- * struct env - Array of env variables
- * @env_var: an env variable value
- *
- * Description: custom Environ structure
- *
- */
-
-typedef struct env
-{
-	char **env_var;
-} New_env;
-
 /*An array of strings representing the environment variables.*/
 extern char **environ;
-
-char **make_environ_cpy(void);
-New_env *create_env(void);
 
 void free_memory(char **argv);
 void print_shell_prompt(void);
@@ -67,6 +51,6 @@ void print_env(char **cmd, int *exit_status);
 
 int is_positive_num(char *str);
 
-int  _setenv(char *name, char *value, int overwrite);
+/*int  _setenv(char *name, char *value, int overwrite);*/
 
 #endif
