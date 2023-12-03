@@ -25,7 +25,7 @@ char **tokenize_command(char *cmd_line)
 
 	cmd_cpy = _strdup(cmd_line);
 
-/* Tokenize the command copy*/
+	/* Tokenize the command copy*/
 	token = strtok(cmd_cpy, delim);
 	if (!token)
 	{
@@ -43,7 +43,6 @@ char **tokenize_command(char *cmd_line)
 	cmd = tokens_array(count, cmd_line, delim, token);
 
 	return (cmd);
-
 }
 
 
@@ -65,7 +64,7 @@ size_t tokens_count(char *token, char *delim)
 {
 	size_t count = 0;
 
-	/* Count the number of tokens int the original command */
+	/* Count the number of tokens in the original command */
 	while (token)
 	{
 		count++;
