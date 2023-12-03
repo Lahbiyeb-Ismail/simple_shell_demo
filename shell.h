@@ -9,6 +9,7 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 
+
 /*An array of strings representing the environment variables.*/
 extern char **environ;
 
@@ -49,5 +50,7 @@ void exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx);
 void print_env(char **cmd, int *exit_status);
 
 int is_positive_num(char *str);
+
+int  _setenv(char *name, char *value, int overwrite);
 
 #endif
