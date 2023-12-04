@@ -35,6 +35,7 @@ char *check_command(char *cmd, struct stat st);
 void rev_string(char *str, int strlen);
 int _strlen(char *s);
 int _strcmp(char *s1, char *s2);
+int _strncmp(char *s1, char *s2, int num);
 char *_strdup(char *str);
 char *_strcpy(char *dest, char *src);
 char *_strcat(char *dest, char *src);
@@ -53,5 +54,6 @@ int is_positive_num(char *str);
 
 int _setenv(char *envname, char *envval, int overwrite);
 int set_new_env(char *envname, char *envval);
+int modify_env(char *envname, char *envval, int overwrite);
 
 #endif
