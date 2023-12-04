@@ -16,40 +16,28 @@
 
 int _setenv(char *name, char *value, int overwrite)
 {
-	char *env_val = NULL;
+	int i = 0;
 	char *new_env = NULL;
-	int env_count = 0;
 	(void)overwrite;
 
-	env_val = _getenv(name);
+	if (!name || !value)
+		return (-1);
 
-	if (!env_val)
-	{
-		while (environ[env_count])
-			env_count++;
+	while (environ[i])
+		i++;
 
-		new_env = malloc(strlen(name) + strlen(value) + 2);
+	new_env = malloc(_strlen(name) + _strlen(value) + 2);
 
-		if (!new_env)
-		{
-			free(env_val), env_val = NULL;
-			return (-1);
-		}
+	if (!new_env)
+		return (-1);
 
-		_strcpy(new_env, name);
-		_strcat(new_env, "=");
-		_strcat(new_env, value);
+	_strcpy(new_env, name);
+	_strcat(new_env, "=");
+	_strcat(new_env, value);
 
+	environ[i] = new_env;
+	environ[i + 1] = NULL;
 
-		environ[env_count] = new_env;
-		environ[env_count + 1] = NULL;
-
-		free(env_val), env_val = NULL;
-		return (0);
-	}
-
-
-	free(env_val), env_val = NULL;
 	return (0);
 }
 
