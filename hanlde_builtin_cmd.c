@@ -27,5 +27,5 @@ void handle_builtin_cmd(char **cmd, char **argv, int *exit_status, int cmd_idx)
 	/* Check if the command is the "env" built-in command */
 	else if (_strcmp(cmd[0], "setenv") == 0)
 		/* TEST WITH THE BUILT-IN setenv FUNCTION*/
-		setenv(cmd[1], cmd[2], 1);
+		(*exit_status) = _setenv(cmd[1], cmd[2], 1);
 }

@@ -51,6 +51,6 @@ void print_env(char **cmd, int *exit_status);
 
 int is_positive_num(char *str);
 
-/*int  _setenv(char *name, char *value, int overwrite);*/
+int  _setenv(char *name, char *value, int overwrite);
 
 #endif
