@@ -167,6 +167,7 @@ char *construct_env_str(char *envname, char *envval)
 	_strcpy(new_env, envname);
 	_strcat(new_env, "=");
 	_strcat(new_env, envval);
+	_strcat(new_env, "\0");
 
 	return (new_env);
 }

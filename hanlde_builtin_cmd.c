@@ -27,6 +27,16 @@ void handle_builtin_cmd(char **cmd, char **argv, int *exit_status, int cmd_idx)
 	/* Check if the command is the "setenv" built-in command */
 	else if (_strcmp(cmd[0], "setenv") == 0)
 	{
+		char *env_err_msg = "Unable to add/remove from environment";
+
+		if (!cmd[1] || !cmd[2] || _setenv(cmd[1], cmd[2], 1) == -1)
+		{
+			print_shell_error(argv[0], cmd_idx, cmd, env_err_msg);
+			(*exit_status) = -1;
+			free_memory(cmd);
+			return;
+		}
+
 		(*exit_status) = _setenv(cmd[1], cmd[2], 1);
 		free_memory(cmd);
 	}
