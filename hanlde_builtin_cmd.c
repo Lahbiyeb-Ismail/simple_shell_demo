@@ -30,4 +30,11 @@ void handle_builtin_cmd(char **cmd, char **argv, int *exit_status, int cmd_idx)
 		(*exit_status) = _setenv(cmd[1], cmd[2], 1);
 		free_memory(cmd);
 	}
+
+	/* Check if the command is the "unsetenv" built-in command */
+	else if (_strcmp(cmd[0], "unsetenv") == 0)
+	{
+		(*exit_status) = _unsetenv(cmd[1]);
+		free_memory(cmd);
+	}
 }

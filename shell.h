@@ -57,4 +57,6 @@ int set_new_env(char *envname, char *envval);
 int modify_env(char *envname, char *envval, int overwrite);
 char *construct_env_str(char *envname, char *envval);
 
+int _unsetenv(char *envname);
+
 #endif
