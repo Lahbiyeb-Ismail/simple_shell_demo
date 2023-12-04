@@ -55,5 +55,6 @@ int is_positive_num(char *str);
 int _setenv(char *envname, char *envval, int overwrite);
 int set_new_env(char *envname, char *envval);
 int modify_env(char *envname, char *envval, int overwrite);
+char *construct_env_str(char *envname, char *envval);
 
 #endif
