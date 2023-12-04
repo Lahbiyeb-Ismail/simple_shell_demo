@@ -21,7 +21,6 @@
 int _setenv(char *envname, char *envval, int overwrite)
 {
 	char *env_val = NULL;
-	char *new_env = NULL;
 	(void)overwrite;
 
 	env_val = _getenv(envname);
@@ -29,14 +28,8 @@ int _setenv(char *envname, char *envval, int overwrite)
 	/* If the environment variable does not exist */
 	if (!env_val)
 	{
-		new_env = set_new_env(envname, envval);
-
-		if (!new_env)
-		{
-			free(env_val), env_val = NULL;
-			free(new_env), new_env = NULL;
+		if (set_new_env(envname, envval) == -1)
 			return (-1);
-		}
 
 		free(env_val), env_val = NULL;
 		/* Successfully set the new environment variable */
@@ -68,7 +61,7 @@ int _setenv(char *envname, char *envval, int overwrite)
  *
  */
 
-char *set_new_env(char *envname, char *envval)
+int set_new_env(char *envname, char *envval)
 {
 	char *new_env = NULL;
 	int env_count = 0;
@@ -78,11 +71,11 @@ char *set_new_env(char *envname, char *envval)
 		env_count++;
 
 	/* Allocate memory for the new environment variable */
-	new_env = malloc(strlen(envname) + strlen(envval) + 2);
+	new_env = malloc(_strlen(envname) + _strlen(envval) + 2);
 
 	/* Check if memory allocation was successful */
 	if (!new_env)
-		return (NULL);
+		return (-1);
 
 	/* Construct the environment variable string: "name=value" */
 	_strcpy(new_env, envname);
@@ -93,6 +86,5 @@ char *set_new_env(char *envname, char *envval)
 	environ[env_count] = new_env;
 	environ[env_count + 1] = NULL;
 
-	/* Return a pointer to the dynamically allocated string */
-	return (new_env);
+	return (0);
 }
