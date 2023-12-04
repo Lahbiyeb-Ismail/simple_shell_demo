@@ -16,30 +16,63 @@
 
 int _setenv(char *name, char *value, int overwrite)
 {
-	int i = 0;
+	char *env_val = NULL;
 	char *new_env = NULL;
 	(void)overwrite;
 
-	if (!name || !value)
+	env_val = _getenv(name);
+
+	if (!env_val)
+	{
+		new_env = set_new_env(name, value);
+
+		if (env_val)
+		{
+			free(new_env);
+			return (0);
+		}
+
 		return (-1);
+	}
 
-	while (environ[i])
-		i++;
 
-	new_env = malloc(_strlen(name) + _strlen(value) + 2);
+	free(env_val), env_val = NULL;
+	return (0);
+}
+
+
+/**
+ * set_new_env - Handle execution of built-in commands
+ *
+ * Description: This function checks if the given command is a built-in
+ * command and executes the corresponding action.
+ *
+ * @name: Array of tokens representing the command and its arguments.
+ * @value: An array of strings representing the command-line arguments.
+ *
+ * Return:  return zero on success, or -1 on error,
+ *
+ */
+
+char *set_new_env(char *name, char *value)
+{
+	char *new_env = NULL;
+	int env_count = 0;
+
+	while (environ[env_count])
+		env_count++;
+
+	new_env = malloc(strlen(name) + strlen(value) + 2);
 
 	if (!new_env)
-		return (-1);
+		return (NULL);
 
 	_strcpy(new_env, name);
 	_strcat(new_env, "=");
 	_strcat(new_env, value);
 
-	environ[i] = new_env;
-	environ[i + 1] = NULL;
+	environ[env_count] = new_env;
+	environ[env_count + 1] = NULL;
 
-	return (0);
+	return (new_env);
 }
-
-
-
