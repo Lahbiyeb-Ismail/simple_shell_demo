@@ -31,7 +31,10 @@ int _setenv(char *name, char *value, int overwrite)
 		new_env = malloc(strlen(name) + strlen(value) + 2);
 
 		if (!new_env)
+		{
+			free(env_val), env_val = NULL;
 			return (-1);
+		}
 
 		_strcpy(new_env, name);
 		_strcat(new_env, "=");
@@ -47,9 +50,7 @@ int _setenv(char *name, char *value, int overwrite)
 
 
 	free(env_val), env_val = NULL;
-	free(new_env), new_env = NULL;
 	return (0);
-
 }
 
 
