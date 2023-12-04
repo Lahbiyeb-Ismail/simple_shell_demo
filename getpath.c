@@ -32,7 +32,6 @@ char *_getpath(char *cmd)
 			return (NULL);
 		}
 	}
-
 	path_val = _getenv("PATH");
 	if (!path_val)
 		return (NULL);

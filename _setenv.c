@@ -1,16 +1,20 @@
 #include "shell.h"
 
 /**
- * _setenv - Handle execution of built-in commands
+ * _setenv - Sets a new environment variable with the specified name and value.
  *
- * Description: This function checks if the given command is a built-in
- * command and executes the corresponding action.
+ * Description: This function checks if an environment variable
+ * with the given name already exists. If it does not exist, it
+ * dynamically allocates memory to create a new environment variable in
+ * the format "name=value" and adds it to the current environment
+ * variables. If the environment variable already exists
+ * and the 'overwrite' flag is not set, the function does nothing.
  *
- * @envname: Array of tokens representing the command and its arguments.
- * @envval: An array of strings representing the command-line arguments.
- * @overwrite: The exit status of the previous command.
+ * @envname: The name of the environment variable.
+ * @envval: The value to be assigned to the environment variable.
+ * @overwrite: The value to be assigned to the environment variable.
  *
- * Return:  return zero on success, or -1 on error,
+ * Return: Returns 0 on success, or -1 on error,
  *
  */
 
@@ -22,36 +26,45 @@ int _setenv(char *envname, char *envval, int overwrite)
 
 	env_val = _getenv(envname);
 
+	/* If the environment variable does not exist */
 	if (!env_val)
 	{
 		new_env = set_new_env(envname, envval);
 
-		if (env_val)
+		if (!new_env)
 		{
 			free(env_val), env_val = NULL;
-			free(new_env);
-			return (0);
+			free(new_env), new_env = NULL;
+			return (-1);
 		}
 
-		return (-1);
+		free(env_val), env_val = NULL;
+		/* Successfully set the new environment variable */
+		return (0);
 	}
 
-
+	 /* Environment variable already exists, and 'overwrite' flag is set */
+		/* TODO: Update the existing environment variable with the new value*/
+		/* For now, we free the existing value and return success */
 	free(env_val), env_val = NULL;
 	return (0);
 }
 
-
 /**
- * set_new_env - Handle execution of built-in commands
+ * set_new_env - Sets a new environment variable with the specified name
+ * and value.
  *
- * Description: This function checks if the given command is a built-in
- * command and executes the corresponding action.
+ * Description: This function dynamically allocates memory to create a
+ * string in the format "name=value" and adds it to the current
+ * environment variables. The new environment variable is appended to the
+ * end of the 'environ' array.
  *
- * @envname: Array of tokens representing the command and its arguments.
- * @envval: An array of strings representing the command-line arguments.
+ * @envname: The name of the environment variable.
+ * @envval: The value to be assigned to the environment variable.
  *
- * Return:  return zero on success, or -1 on error,
+ * Return: A pointer to the dynamically allocated string containing the
+ *         environment variable in the format "name=value".
+ * Returns NULL if memory allocation fails.
  *
  */
 
@@ -60,20 +73,26 @@ char *set_new_env(char *envname, char *envval)
 	char *new_env = NULL;
 	int env_count = 0;
 
+	/* Find the number of existing environment variables */
 	while (environ[env_count])
 		env_count++;
 
+	/* Allocate memory for the new environment variable */
 	new_env = malloc(strlen(envname) + strlen(envval) + 2);
 
+	/* Check if memory allocation was successful */
 	if (!new_env)
 		return (NULL);
 
+	/* Construct the environment variable string: "name=value" */
 	_strcpy(new_env, envname);
 	_strcat(new_env, "=");
 	_strcat(new_env, envval);
 
+	/* Add the new environment variable to the 'environ' array */
 	environ[env_count] = new_env;
 	environ[env_count + 1] = NULL;
 
+	/* Return a pointer to the dynamically allocated string */
 	return (new_env);
 }
