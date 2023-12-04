@@ -6,28 +6,29 @@
  * Description: This function checks if the given command is a built-in
  * command and executes the corresponding action.
  *
- * @name: Array of tokens representing the command and its arguments.
- * @value: An array of strings representing the command-line arguments.
+ * @envname: Array of tokens representing the command and its arguments.
+ * @envval: An array of strings representing the command-line arguments.
  * @overwrite: The exit status of the previous command.
  *
  * Return:  return zero on success, or -1 on error,
  *
  */
 
-int _setenv(char *name, char *value, int overwrite)
+int _setenv(char *envname, char *envval, int overwrite)
 {
 	char *env_val = NULL;
 	char *new_env = NULL;
 	(void)overwrite;
 
-	env_val = _getenv(name);
+	env_val = _getenv(envname);
 
 	if (!env_val)
 	{
-		new_env = set_new_env(name, value);
+		new_env = set_new_env(envname, envval);
 
 		if (env_val)
 		{
+			free(env_val), env_val = NULL;
 			free(new_env);
 			return (0);
 		}
@@ -47,14 +48,14 @@ int _setenv(char *name, char *value, int overwrite)
  * Description: This function checks if the given command is a built-in
  * command and executes the corresponding action.
  *
- * @name: Array of tokens representing the command and its arguments.
- * @value: An array of strings representing the command-line arguments.
+ * @envname: Array of tokens representing the command and its arguments.
+ * @envval: An array of strings representing the command-line arguments.
  *
  * Return:  return zero on success, or -1 on error,
  *
  */
 
-char *set_new_env(char *name, char *value)
+char *set_new_env(char *envname, char *envval)
 {
 	char *new_env = NULL;
 	int env_count = 0;
@@ -62,14 +63,14 @@ char *set_new_env(char *name, char *value)
 	while (environ[env_count])
 		env_count++;
 
-	new_env = malloc(strlen(name) + strlen(value) + 2);
+	new_env = malloc(strlen(envname) + strlen(envval) + 2);
 
 	if (!new_env)
 		return (NULL);
 
-	_strcpy(new_env, name);
+	_strcpy(new_env, envname);
 	_strcat(new_env, "=");
-	_strcat(new_env, value);
+	_strcat(new_env, envval);
 
 	environ[env_count] = new_env;
 	environ[env_count + 1] = NULL;
