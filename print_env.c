@@ -8,13 +8,11 @@
  * memory allocated for the command.
  *
  * @cmd: Array of tokens representing the command and its arguments.
- * @exit_status: The exit status to be used when exiting the shell.
  *
- *
- * Return: void
+ * Return: 0 on success
  */
 
-void print_env(char **cmd, int *exit_status)
+int print_env(char **cmd)
 {
 	unsigned int i = 0;
 
@@ -28,6 +26,6 @@ void print_env(char **cmd, int *exit_status)
 	/* Free memory allocated for the command */
 	free_memory(cmd);
 
-	(*exit_status) = 0;
+	return (0);
 }
 

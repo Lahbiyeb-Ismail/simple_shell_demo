@@ -14,7 +14,7 @@
  * Return: void
  */
 
-void exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx)
+int exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx)
 {
 	int exit_val = (*exit_status);
 	char *err_msg = "Illegal number";
@@ -28,9 +28,9 @@ void exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx)
 			print_shell_error(argv[0], cmd_idx, cmd, err_msg);
 
 			free_memory(cmd);
-			(*exit_status) = 2;
+			exit_val = 2;
 
-			return;
+			return (exit_val);
 		}
 	}
 

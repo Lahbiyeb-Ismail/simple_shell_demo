@@ -37,5 +37,6 @@ void print_shell_error(char *shell_name, int cmd_idx, char **cmd,
 
 	write(STDERR_FILENO, "\n", 1);
 
+	free_memory(cmd);
 	free(idx);
 }
