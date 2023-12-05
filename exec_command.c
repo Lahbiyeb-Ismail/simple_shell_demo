@@ -68,7 +68,6 @@ char *get_cmd_path(char **cmd, char **argv, int cmd_idx)
 	if (!cmd_path)
 	{
 		print_shell_error(argv[0], cmd_idx, cmd, err_msg);
-		free_memory(cmd);
 		return (NULL);
 	}
 

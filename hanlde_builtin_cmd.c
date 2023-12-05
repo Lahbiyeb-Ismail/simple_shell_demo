@@ -41,6 +41,16 @@ int handle_builtin_cmd(char **cmd, char **argv, int *status, int cmd_idx)
 
 		free_memory(cmd);
 	}
+	else if (_strcmp(cmd[0], "cd") == 0)
+	{
+		exit_status = change_dir(cmd);
+
+		if (exit_status == -1)
+		{
+			print_shell_error(argv[0], cmd_idx, cmd, "can't cd to ");
+			exit_status = 2;
+		}
+	}
 
 	return (exit_status);
 }

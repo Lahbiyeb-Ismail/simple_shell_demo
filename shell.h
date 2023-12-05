@@ -44,7 +44,8 @@ char *_itoa(int num);
 int _atoi(char *s);
 
 int check_if_builtin_cmd(char *cmd);
-int handle_builtin_cmd(char **cmd, char **argv, int *exit_status, int cmd_idx);
+int handle_builtin_cmd(char **cmd, char **argv, int *exit_status,
+	int cmd_idx);
 int exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx);
 
 
@@ -60,5 +61,7 @@ void print_env_error(char **cmd, int *exit_status, char *shell_name,
 	int cmd_idx);
 
 int _unsetenv(char *envname);
+
+int change_dir(char **cmd);
 
 #endif

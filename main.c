@@ -53,4 +53,6 @@ int main(int argc, char **argv)
 		/* Execute the command and get the exit status */
 			exit_status = exec_command(cmd, argv, cmd_idx);
 	} while (1);
+
+	free_memory(cmd);
 }

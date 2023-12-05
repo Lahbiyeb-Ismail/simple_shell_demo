@@ -15,7 +15,7 @@
 int check_if_builtin_cmd(char *cmd)
 {
 	/* Array of predefined built-in commands */
-	char *builtin_cmd[] = { "exit", "env", "setenv", "unsetenv", NULL };
+	char *builtin_cmd[] = { "exit", "env", "setenv", "unsetenv", "cd", NULL };
 	int i = 0;
 
 	while (builtin_cmd[i])

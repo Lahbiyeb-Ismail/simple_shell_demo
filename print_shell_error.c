@@ -31,7 +31,9 @@ void print_shell_error(char *shell_name, int cmd_idx, char **cmd,
 
 	if (cmd[1])
 	{
-		write(STDERR_FILENO, ": ", 2);
+		if (_strcmp(cmd[0], "cd") != 0)
+			write(STDERR_FILENO, ": ", 2);
+
 		write(STDERR_FILENO, cmd[1], _strlen(cmd[1]));
 	}
 
