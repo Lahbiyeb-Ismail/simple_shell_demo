@@ -26,8 +26,6 @@ int exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx)
 		else
 		{
 			print_shell_error(argv[0], cmd_idx, cmd, err_msg);
-
-			free_memory(cmd);
 			exit_val = 2;
 
 			return (exit_val);
