@@ -27,22 +27,13 @@ int _setenv(char *envname, char *envval, int overwrite)
 
 	/* If the environment variable does not exist */
 	if (!env_val)
-	{
 		status = set_new_env(envname, envval);
-		free(env_val), env_val = NULL;
-		/* Successfully set the new environment variable */
-		return (status);
-	}
 	/* Environment variable already exists, and 'overwrite' flag is set */
 	else
-	{
 		status = modify_env(envname, envval, overwrite);
-		free(env_val), env_val = NULL;
-		return (status);
-	}
 
 	free(env_val), env_val = NULL;
-	return (0);
+	return (status);
 }
 
 /**
@@ -119,20 +110,20 @@ int modify_env(char *envname, char *envval, int overwrite)
 		{
 			if (overwrite)
 			{
-				free(environ[i]);
+				free(environ[i]), environ[i] = NULL;
 
 				/* Modify the existing env variable with the new env */
 				environ[i] = new_env;
 				return (0);
 			}
 
-			free(new_env);
+			free(new_env), new_env = NULL;
 			return (0);
 		}
 		i++;
 	}
 
-	free(new_env);
+	free(new_env), new_env = NULL;
 	return (-1);
 }
 
