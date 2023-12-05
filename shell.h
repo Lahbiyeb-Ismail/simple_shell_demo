@@ -56,6 +56,8 @@ int _setenv(char *envname, char *envval, int overwrite);
 int set_new_env(char *envname, char *envval);
 int modify_env(char *envname, char *envval, int overwrite);
 char *construct_env_str(char *envname, char *envval);
+void print_env_error(char **cmd, int *exit_status, char *shell_name,
+	int cmd_idx);
 
 int _unsetenv(char *envname);
 

@@ -51,9 +51,9 @@ int _setenv(char *envname, char *envval, int overwrite)
  * @envname: The name of the environment variable.
  * @envval: The value to be assigned to the environment variable.
  *
- * Return: A pointer to the dynamically allocated string containing the
- *         environment variable in the format "name=value".
- * Returns NULL if memory allocation fails.
+ * Return:
+ * Returns 0 on success, or -1 on failure (memory allocation error or
+ * environment variable not found and 'overwrite' is not set).
  *
  */
 
