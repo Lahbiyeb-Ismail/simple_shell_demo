@@ -18,6 +18,7 @@
  *
  */
 
+/* TODO: FIW MEMORY ALLOCATION LEAK*/
 int _setenv(char *envname, char *envval, int overwrite)
 {
 	char *env_val = NULL;
