@@ -24,6 +24,7 @@ int main(int argc, char **argv)
 	char *operator = NULL;
 	/* Array to store the tokens of the cmd */
 	char **cmd = NULL;
+	char **multi_cmd = NULL;
 
 	int exit_status = 0, cmd_idx = 0;
 	(void)argc;
@@ -47,17 +48,14 @@ int main(int argc, char **argv)
 		if (operator)
 		{
 			int i;
-			char **multi_cmd;
 
 			multi_cmd = tokenize_command(cmd_line, operator);
 			for (i = 0; multi_cmd[i]; i++)
 			{
 				cmd = tokenize_command(multi_cmd[i], " \t\n");
-				if (!cmd) {
-					free_memory(multi_cmd);
-					free(cmd_line);
+
+				if (!cmd)
 					continue;
-				}
 
 				exit_status = exec_command(cmd, argv, cmd_idx);
 			}
@@ -76,8 +74,9 @@ int main(int argc, char **argv)
 			/* Execute the command and get the exit status */
 				exit_status = exec_command(cmd, argv, cmd_idx);
 		}
-
 	} while (1);
 
+	free(cmd_line);
 	free_memory(cmd);
+	free_memory(multi_cmd);
 }

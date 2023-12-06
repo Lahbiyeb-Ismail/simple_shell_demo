@@ -19,13 +19,10 @@
 char *check_for_operator(char *cmd_line)
 {
 	int i;
-	char *operator = NULL;
 
 	for (i = 0; cmd_line[i]; i++)
-	{
 		if (cmd_line[i] == ';')
-			operator = ";";
-	}
+			return (";");
 
-	return (operator);
+	return (NULL);
 }
