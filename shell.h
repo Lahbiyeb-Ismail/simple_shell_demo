@@ -63,8 +63,9 @@ void print_env_error(char **cmd, int *exit_status, char *shell_name,
 int _unsetenv(char *envname);
 
 int change_dir(char **cmd);
-char *cd_home(char *curr_dir);
-char *cd_prev(char *curr_dir);
+char *cd_home(char *curr_dir, char *home_val);
+char *cd_prev(char *curr_dir, char *old_pwd_val);
 char *cd_to(char *path, char *curr_dir);
+void free_cd_memory(char *curr_dir, char *old_pwd, char *home_env);
 
 #endif

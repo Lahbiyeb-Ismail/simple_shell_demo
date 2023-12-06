@@ -48,8 +48,10 @@ int handle_builtin_cmd(char **cmd, char **argv, int *status, int cmd_idx)
 		if (exit_status == -1)
 		{
 			print_shell_error(argv[0], cmd_idx, cmd, "can't cd to ");
-			exit_status = 2;
+			return (2);
 		}
+
+		free_memory(cmd);
 	}
 
 	return (exit_status);

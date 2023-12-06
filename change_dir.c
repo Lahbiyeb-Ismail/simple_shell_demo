@@ -18,25 +18,36 @@ int change_dir(char **cmd)
 	int status = 0;
 	char *dir = NULL;
 	char *curr_dir = NULL;
+	char *old_pwd = NULL, *old_pwd_val = NULL;
+	char *home_env = NULL, *home_val = NULL;
 
 	curr_dir = getcwd(curr_dir, 0);
+
+	/* Get the prev working dir from the environment variables ('OLDPWD') */
+	old_pwd = _getenv("OLDPWD");
+	old_pwd_val = old_pwd ? strtok(old_pwd, "=") : curr_dir;
+
+	/* Get the user's home directory from the environment variables */
+	home_env = _getenv("HOME");
+	home_val = home_env ? strtok(home_env, "=") : NULL;
 
 	if (!curr_dir)
 	{
 		perror("getcwd");
+		free_cd_memory(curr_dir, old_pwd, home_env);
 		return (-1);
 	}
 
 	if (!cmd[1])
-		dir = cd_home(curr_dir);
+		dir = cd_home(curr_dir, home_val);
 	else if (_strcmp(cmd[1], "-") == 0)
-		dir = cd_prev(curr_dir);
+		dir = cd_prev(curr_dir, old_pwd_val);
 	else
 		dir = cd_to(cmd[1], curr_dir);
 
 	status = chdir(dir);
-	free(curr_dir);
 
+	free_cd_memory(curr_dir, old_pwd, home_env);
 	return (status);
 }
 
@@ -49,19 +60,15 @@ int change_dir(char **cmd)
  * updates the environment variables 'PWD' and 'OLDPWD' accordingly.
  *
  * @curr_dir: The current working dir before changing to the home directory.
+ * @home_val: The user's home (root) working directory.
  *
  * Return:
  * Returns a pointer to the user's home dir on success, or NULL on failure.
  */
 
-char *cd_home(char *curr_dir)
+char *cd_home(char *curr_dir, char *home_val)
 {
 	char *dir = NULL;
-	char *home_env = NULL, *home_val = NULL;
-
-	/* Get the user's home directory from the environment variables */
-	home_env = _getenv("HOME");
-	home_val = home_env ? strtok(home_env, "=") : NULL;
 
 	/* Set the target directory to the user's home directory */
 	dir = home_val;
@@ -83,19 +90,15 @@ char *cd_home(char *curr_dir)
  * and updates the environment variables 'PWD' and 'OLDPWD' accordingly.
  *
  * @curr_dir: The current working dir before changing to the previous dir.
+ * @old_pwd_val: The value of the 'OLDPWD' environment variable.
  *
  * Return: A pointer to the prev working dir on success, or NULL on failure.
  */
 
-char *cd_prev(char *curr_dir)
+char *cd_prev(char *curr_dir, char *old_pwd_val)
 {
 
-	char *old_pwd = NULL, *old_pwd_val = NULL;
 	char *dir = NULL;
-
-	/* Get the prev working dir from the environment variables ('OLDPWD') */
-	old_pwd = _getenv("OLDPWD");
-	old_pwd_val = old_pwd ? strtok(old_pwd, "=") : curr_dir;
 
 	/* Set the target directory to the previous working directory */
 	dir = old_pwd_val;
@@ -135,4 +138,24 @@ char *cd_to(char *path, char *curr_dir)
 	_setenv("OLDPWD", curr_dir, 1);
 
 	return  (dir);
+}
+
+/**
+ * free_cd_memory - Free memory associated with current directory, old working
+ * directory, and home environment.
+ *
+ * Description:
+ * This function frees the memory associated with the provided strings
+ *
+ * @curr_dir: Pointer to the current working directory string.
+ * @old_pwd: Pointer to the old working directory string.
+ * @home_env: Pointer to the home environment string.
+ *
+ */
+
+void free_cd_memory(char *curr_dir, char *old_pwd, char *home_env)
+{
+	free(curr_dir);
+	free(old_pwd);
+	free(home_env);
 }
