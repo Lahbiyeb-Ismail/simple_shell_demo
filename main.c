@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 	char **cmd = NULL;
 	char **multi_cmd = NULL;
 
-	int exit_status = 0, cmd_idx = 0;
+	int exit_status = 0, cmd_idx = 0, i;
 	(void)argc;
 
 	do {
@@ -43,7 +43,10 @@ int main(int argc, char **argv)
 		}
 		cmd_idx++;
 
-		operator = check_for_operator(cmd_line);
+		/* TODO: FIX THE MEMORY ALLOCATION LEAK */
+		for (i = 0; cmd_line[i]; i++)
+			if (cmd_line[i] == ';')
+				operator = ";";
 
 		if (operator)
 		{
