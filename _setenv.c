@@ -102,16 +102,17 @@ int modify_env(char *envname, char *envval, int overwrite)
 	new_env = construct_env_str(envname, envval);
 
 	if (!new_env)
+	{
+		free(new_env);
 		return (-1);
+	}
 
 	while (environ[i])
 	{
 		if (_strncmp(environ[i], envname, _strlen(envname)) == 0)
 		{
-			if (overwrite)
+			if (overwrite == 1)
 			{
-				free(environ[i]), environ[i] = NULL;
-
 				/* Modify the existing env variable with the new env */
 				environ[i] = new_env;
 				return (0);

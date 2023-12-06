@@ -33,7 +33,9 @@ int _unsetenv(char *envname)
 	{
 		if (_strncmp(environ[i], envname, _strlen(envname)) == 0)
 		{
-			free(environ[i]), environ[i] = NULL;
+			for (; environ[i]; i++)
+				environ[i] = environ[i + 1];
+
 			free(env_val), env_val = NULL;
 			return (0);
 		}
