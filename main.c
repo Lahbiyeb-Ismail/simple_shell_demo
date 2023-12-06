@@ -21,12 +21,11 @@ int main(int argc, char **argv)
 {
 	/* Buffer to store the user's input cmd */
 	char *cmd_line = NULL;
-	char *operator = NULL;
 	/* Array to store the tokens of the cmd */
 	char **cmd = NULL;
 	char **multi_cmd = NULL;
 
-	int exit_status = 0, cmd_idx = 0, i;
+	int exit_status = 0, cmd_idx = 0;
 	(void)argc;
 
 	do {
@@ -44,23 +43,25 @@ int main(int argc, char **argv)
 		cmd_idx++;
 
 		/* TODO: FIX THE MEMORY ALLOCATION LEAK */
-		for (i = 0; cmd_line[i]; i++)
-			if (cmd_line[i] == ';')
-				operator = ";";
+		multi_cmd = tokenize_command(cmd_line, ";");
 
-		if (operator)
+		if (multi_cmd)
 		{
 			int i;
 
-			multi_cmd = tokenize_command(cmd_line, operator);
 			for (i = 0; multi_cmd[i]; i++)
 			{
+					/* Tokenize (split) the command and get the array of tokens */
 				cmd = tokenize_command(multi_cmd[i], " \t\n");
 
 				if (!cmd)
 					continue;
 
-				exit_status = exec_command(cmd, argv, cmd_idx);
+				if (check_if_builtin_cmd(cmd[0]))
+					exit_status = handle_builtin_cmd(cmd, argv, &exit_status, cmd_idx);
+				else
+				/* Execute the command and get the exit status */
+					exit_status = exec_command(cmd, argv, cmd_idx);
 			}
 		}
 		else
@@ -81,5 +82,4 @@ int main(int argc, char **argv)
 
 	free(cmd_line);
 	free_memory(cmd);
-	free_memory(multi_cmd);
 }
