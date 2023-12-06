@@ -19,7 +19,7 @@ void print_shell_error(char *shell_name, int cmd_idx, char **cmd,
 	char *err_msg);
 
 char *read_command(void);
-char **tokenize_command(char *cmd);
+char **tokenize_command(char *cmd, char *delim);
 size_t tokens_count(char *cmd_line, char *delim);
 char **tokens_array(size_t count, char *cmd_line, char *delim, char *token);
 int exec_command(char **cmd, char **argv, int cmd_idx);
@@ -67,5 +67,7 @@ char *cd_home(char *curr_dir, char *home_val);
 char *cd_prev(char *curr_dir, char *old_pwd_val);
 char *cd_to(char *path, char *curr_dir);
 void free_cd_memory(char *curr_dir, char *old_pwd, char *home_env);
+
+char *check_for_operator(char *cmd_line);
 
 #endif

@@ -21,6 +21,7 @@ int main(int argc, char **argv)
 {
 	/* Buffer to store the user's input cmd */
 	char *cmd_line = NULL;
+	char *operator = NULL;
 	/* Array to store the tokens of the cmd */
 	char **cmd = NULL;
 
@@ -41,17 +42,41 @@ int main(int argc, char **argv)
 		}
 		cmd_idx++;
 
-		/* Tokenize (split) the command and get the array of tokens */
-		cmd = tokenize_command(cmd_line);
+		operator = check_for_operator(cmd_line);
 
-		if (!cmd)
-			continue;
+		if (operator)
+		{
+			int i;
+			char **multi_cmd;
 
-		if (check_if_builtin_cmd(cmd[0]))
-			exit_status = handle_builtin_cmd(cmd, argv, &exit_status, cmd_idx);
+			multi_cmd = tokenize_command(cmd_line, operator);
+			for (i = 0; multi_cmd[i]; i++)
+			{
+				cmd = tokenize_command(multi_cmd[i], " \t\n");
+				if (!cmd) {
+					free_memory(multi_cmd);
+					free(cmd_line);
+					continue;
+				}
+
+				exit_status = exec_command(cmd, argv, cmd_idx);
+			}
+		}
 		else
-		/* Execute the command and get the exit status */
-			exit_status = exec_command(cmd, argv, cmd_idx);
+		{
+				/* Tokenize (split) the command and get the array of tokens */
+			cmd = tokenize_command(cmd_line, " \t\n");
+
+			if (!cmd)
+				continue;
+
+			if (check_if_builtin_cmd(cmd[0]))
+				exit_status = handle_builtin_cmd(cmd, argv, &exit_status, cmd_idx);
+			else
+			/* Execute the command and get the exit status */
+				exit_status = exec_command(cmd, argv, cmd_idx);
+		}
+
 	} while (1);
 
 	free_memory(cmd);

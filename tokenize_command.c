@@ -9,14 +9,15 @@
  * with the number of tokens.
  *
  * @cmd_line: The command string to tokenize.
+ * @delim: The delimiter used for tokenization.
  *
  * Return: An array of dynamically allocated strings representing tokens.
  *
 */
 
-char **tokenize_command(char *cmd_line)
+char **tokenize_command(char *cmd_line, char *delim)
 {
-	char *cmd_cpy, *token = NULL, *delim = " \t\n";
+	char *cmd_cpy, *token = NULL;
 	char **cmd = NULL;
 	size_t count = 0;
 
