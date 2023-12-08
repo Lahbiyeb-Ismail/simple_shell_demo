@@ -9,15 +9,15 @@
  * @cmd: Array of tokens representing the command and its arguments.
  * @argv: An array of strings representing the command-line arguments.
  * @cmd_idx: Index of the command in the token array.
+ * @exit_status: Index of the command in the token array.
  *
  * Return: 0 on success, -1 on failure.
  *
 */
 
-int exec_command(char **cmd, char **argv, int cmd_idx)
+int exec_command(char **cmd, char **argv, int cmd_idx, int *exit_status)
 {
 	pid_t pid;
-	int status = 0;
 	char *cmd_path = NULL;
 
 	cmd_path = get_cmd_path(cmd, argv, cmd_idx);
@@ -33,9 +33,9 @@ int exec_command(char **cmd, char **argv, int cmd_idx)
 	if (pid == 0)
 		child_process_exec(cmd_path, cmd);
 	else
-		parent_process_exec(pid, cmd, cmd_path, status);
+		parent_process_exec(pid, cmd, cmd_path, exit_status);
 
-	return (WEXITSTATUS(status));
+	return (WEXITSTATUS(*exit_status));
 }
 
 
@@ -113,15 +113,16 @@ void child_process_exec(char *cmd_path, char **cmd)
  * @pid: The process ID of the child process.
  * @cmd: Array of tokens representing the command and its arguments.
  * @cmd_path: The full path of the command.
- * @status: The exit status of the child process.
+ * @exit_status: The exit status of the child process.
  *
  * Return: void
  */
 
-void parent_process_exec(pid_t pid, char **cmd, char *cmd_path, int status)
+void parent_process_exec(pid_t pid, char **cmd, char *cmd_path,
+	int *exit_status)
 {
 	/* Wait for the child process to finish and collect its exit status */
-	waitpid(pid, &status, 0);
+	waitpid(pid, exit_status, 0);
 
 	/* Free memory allocated for the command and its path */
 	free_memory(cmd);

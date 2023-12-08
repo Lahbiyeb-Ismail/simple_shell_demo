@@ -22,10 +22,10 @@ char *read_command(void);
 char **tokenize_command(char *cmd, char *delim);
 size_t tokens_count(char *cmd_line, char *delim);
 char **tokens_array(size_t count, char *cmd_line, char *delim, char *token);
-int exec_command(char **cmd, char **argv, int cmd_idx);
+int exec_command(char **cmd, char **argv, int cmd_idx, int *exit_status);
 char *get_cmd_path(char **cmd, char **argv, int cmd_idx);
 void child_process_exec(char *cmd_path, char **cmd);
-void parent_process_exec(pid_t pid, char **cmd, char *cmd_path, int status);
+void parent_process_exec(pid_t pid, char **cmd, char *cmd_path, int *status);
 
 char *_getenv(char *name);
 char *_getpath(char *cmd);

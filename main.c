@@ -64,7 +64,7 @@ int main(int argc, char **argv)
 					exit_status = handle_builtin_cmd(cmd, argv, &exit_status, cmd_idx);
 				else
 				/* Execute the command and get the exit status */
-					exit_status = exec_command(cmd, argv, cmd_idx);
+					exit_status = exec_command(cmd, argv, cmd_idx, &exit_status);
 			}
 		}
 		else
@@ -79,10 +79,9 @@ int main(int argc, char **argv)
 				exit_status = handle_builtin_cmd(cmd, argv, &exit_status, cmd_idx);
 			else
 			/* Execute the command and get the exit status */
-				exit_status = exec_command(cmd, argv, cmd_idx);
+				exit_status = exec_command(cmd, argv, cmd_idx, &exit_status);
 		}
 	} while (1);
 
-	free(cmd_line);
 	free_memory(cmd);
 }
