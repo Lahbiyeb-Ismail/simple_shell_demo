@@ -43,7 +43,7 @@ int main(int argc, char **argv)
 		operator = check_for_operator(cmd_line);
 
 		if (operator)
-			handle_operators(cmd, argv, cmd_line,
+			handle_operators(argv, cmd_line,
 				operator, &exit_status, cmd_idx);
 		else
 		{
@@ -55,7 +55,10 @@ int main(int argc, char **argv)
 
 			process_command(cmd, argv, cmd_idx, &exit_status);
 		}
+
+		free(operator);
 	} while (1);
+
 
 	free_memory(cmd);
 }

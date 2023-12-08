@@ -17,7 +17,6 @@
  * - For ';' (sequential command execution): Executes each command sequentially
  *   without considering the exit status of previous commands.
  *
- * @cmd: Array of tokens representing the command and its arguments.
  * @argv: An array of strings representing the command-line arguments.
  * @cmd_line: The entire command line string.
  * @operator: The operator used to separate commands (';', '&&', '||').
@@ -27,10 +26,11 @@
  *
  */
 
-void handle_operators(char **cmd, char **argv,
+void handle_operators(char **argv,
 	char *cmd_line, char *operator, int *exit_status, int cmd_idx)
 {
 	char **multi_cmd = NULL;
+	char **cmd = NULL;
 	int i;
 	int status = (*exit_status);
 
@@ -50,7 +50,12 @@ void handle_operators(char **cmd, char **argv,
 			if (status == 0)
 				continue;
 			else
+			{
+				free_memory(multi_cmd);
+				free_memory(cmd);
+				free(operator);
 				break;
+			}
 		}
 		else if (_strcmp(operator, "||") == 0)
 		{
