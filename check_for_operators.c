@@ -21,8 +21,14 @@ char *check_for_operator(char *cmd_line)
 	int i;
 
 	for (i = 0; cmd_line[i]; i++)
+	{
 		if (cmd_line[i] == ';')
-			return (";");
+			return (_strdup(";"));
+		else if (cmd_line[i] == '&' && cmd_line[i + 1] == '&')
+			return (_strdup("&&"));
+		else if (cmd_line[i] == '|' && cmd_line[i + 1] == '|')
+			return (_strdup("||"));
+	}
 
 	return (NULL);
 }
