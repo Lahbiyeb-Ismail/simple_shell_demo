@@ -30,6 +30,5 @@ char *check_for_operator(char *cmd_line)
 			return (_strdup("||"));
 	}
 
-	free(cmd_line);
 	return (NULL);
 }
