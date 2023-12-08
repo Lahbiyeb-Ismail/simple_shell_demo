@@ -23,11 +23,11 @@ char *check_for_operator(char *cmd_line)
 	for (i = 0; cmd_line[i]; i++)
 	{
 		if (cmd_line[i] == ';')
-			return (_strdup(";"));
+			return (";");
 		else if (cmd_line[i] == '&' && cmd_line[i + 1] == '&')
-			return (_strdup("&&"));
+			return ("&&");
 		else if (cmd_line[i] == '|' && cmd_line[i + 1] == '|')
-			return (_strdup("||"));
+			return ("||");
 	}
 
 	return (NULL);

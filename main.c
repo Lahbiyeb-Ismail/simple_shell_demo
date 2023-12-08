@@ -47,6 +47,7 @@ int main(int argc, char **argv)
 				operator, &exit_status, cmd_idx);
 		else
 		{
+			free(operator);
 				/* Tokenize (split) the command and get the array of tokens */
 			cmd = tokenize_command(cmd_line, " \t\n");
 			if (!cmd)
@@ -56,6 +57,5 @@ int main(int argc, char **argv)
 		}
 	} while (1);
 	free(cmd_line);
-	free(operator);
 	free_memory(cmd);
 }
