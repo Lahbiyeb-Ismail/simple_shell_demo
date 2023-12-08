@@ -21,8 +21,14 @@ char *check_for_operator(char *cmd_line)
 	int i;
 
 	for (i = 0; cmd_line[i]; i++)
+	{
 		if (cmd_line[i] == ';')
+		{
+			free(cmd_line);
 			return (";");
+		}
+	}
 
+	free(cmd_line);
 	return (NULL);
 }
