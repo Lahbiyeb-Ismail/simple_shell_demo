@@ -30,15 +30,15 @@ char **tokenize_command(char *cmd_line, char *delim)
 	token = strtok(cmd_cpy, delim);
 	if (!token)
 	{
-		free(cmd_line), cmd_line = NULL;
-		free(cmd_cpy), cmd_cpy = NULL;
+		free(cmd_line);
+		free(cmd_cpy);
 		return (NULL);
 	}
 
 	/* Count the number of tokens in a string */
 	count = tokens_count(token, delim);
 
-	free(cmd_cpy), cmd_cpy = NULL;
+	free(cmd_cpy);
 
 	/* Create an array of tokens from a string */
 	cmd = tokens_array(count, cmd_line, delim, token);
@@ -101,7 +101,7 @@ char **tokens_array(size_t count, char *cmd_line, char *delim, char *token)
 	cmd = malloc(sizeof(char *) * (count + 1));
 	if (!cmd)
 	{
-		free(cmd_line), cmd_line = NULL;
+		free(cmd_line);
 		return (NULL);
 	}
 
@@ -116,11 +116,11 @@ char **tokens_array(size_t count, char *cmd_line, char *delim, char *token)
 		i++;
 	}
 
-	/* Free the original command line string */
-	free(cmd_line), cmd_line = NULL;
-
 	/* Set the last element of the array to NULL */
 	cmd[i] = NULL;
+
+	/* Free the original command line string */
+	free(cmd_line);
 
 	return (cmd);
 }
