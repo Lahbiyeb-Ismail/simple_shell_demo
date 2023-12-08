@@ -21,6 +21,7 @@ int main(int argc, char **argv)
 {
 	/* Buffer to store the user's input cmd */
 	char *cmd_line = NULL;
+	char *operator = NULL;
 	/* Array to store the tokens of the cmd */
 	char **cmd = NULL;
 	char **multi_cmd = NULL;
@@ -43,11 +44,13 @@ int main(int argc, char **argv)
 		cmd_idx++;
 
 		/* TODO: FIX THE MEMORY ALLOCATION LEAK */
-		multi_cmd = tokenize_command(cmd_line, ";");
+		operator = check_for_operator(cmd_line);
 
-		if (multi_cmd)
+		if (operator)
 		{
 			int i;
+
+			multi_cmd = tokenize_command(cmd_line, operator);
 
 			for (i = 0; multi_cmd[i]; i++)
 			{
