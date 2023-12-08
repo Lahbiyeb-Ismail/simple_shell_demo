@@ -49,16 +49,13 @@ int main(int argc, char **argv)
 		{
 				/* Tokenize (split) the command and get the array of tokens */
 			cmd = tokenize_command(cmd_line, " \t\n");
-
 			if (!cmd)
 				continue;
 
 			process_command(cmd, argv, cmd_idx, &exit_status);
 		}
-
-		free(operator);
 	} while (1);
-
-
+	free(cmd_line);
+	free(operator);
 	free_memory(cmd);
 }

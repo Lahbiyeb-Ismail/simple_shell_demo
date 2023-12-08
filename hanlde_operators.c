@@ -50,12 +50,7 @@ void handle_operators(char **argv,
 			if (status == 0)
 				continue;
 			else
-			{
-				free_memory(multi_cmd);
-				free_memory(cmd);
-				free(operator);
 				break;
-			}
 		}
 		else if (_strcmp(operator, "||") == 0)
 		{
