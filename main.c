@@ -43,7 +43,6 @@ int main(int argc, char **argv)
 		}
 		cmd_idx++;
 
-		/* TODO: FIX THE MEMORY ALLOCATION LEAK */
 		operator = check_for_operator(_strdup(cmd_line));
 
 		if (operator)
