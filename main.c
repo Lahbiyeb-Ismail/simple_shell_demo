@@ -29,6 +29,9 @@ int main(int argc, char **argv)
 	do {
 		/* Prompt user and read the command */
 		cmd_line = read_command();
+
+		handle_comments(&cmd_line);
+
 		if (!cmd_line)
 		{
 			/* Print a new line befor exit if we are in the interactive mode */

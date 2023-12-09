@@ -73,4 +73,6 @@ void free_cd_memory(char *curr_dir, char *old_pwd, char *home_env);
 
 char *check_for_operator(char *cmd_line);
 
+void handle_comments(char **cmd_line);
+
 #endif
