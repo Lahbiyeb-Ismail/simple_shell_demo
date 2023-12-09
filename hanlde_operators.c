@@ -63,6 +63,7 @@ void handle_operators(char **argv,
 		else
 			process_command(cmd, argv, cmd_idx, &status);
 
+		free(cmd_line);
 		free_memory(cmd);
 	}
 }

@@ -40,10 +40,11 @@ int main(int argc, char **argv)
 		cmd_idx++;
 
 		/* TODO: FIX THE MEMORY ALLOCATION LEAK */
-		operator = check_for_operator(cmd_line);
+		operator = check_for_operator(_strdup(cmd_line));
 
+		/* TODO: TEST WITH _strdup(cmd_line)*/
 		if (operator)
-			handle_operators(argv, cmd_line,
+			handle_operators(argv, _strdup(cmd_line),
 				operator, &exit_status, cmd_idx);
 		else
 		{
@@ -52,7 +53,6 @@ int main(int argc, char **argv)
 			cmd = tokenize_command(cmd_line, " \t\n");
 			if (!cmd)
 				continue;
-
 			process_command(cmd, argv, cmd_idx, &exit_status);
 		}
 	} while (1);
