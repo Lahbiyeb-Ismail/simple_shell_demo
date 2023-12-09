@@ -27,8 +27,8 @@ void process_command(char **cmd, char **argv, int cmd_idx, int *exit_status);
 char *get_cmd_path(char **cmd, char **argv, int cmd_idx);
 void child_process_exec(char *cmd_path, char **cmd);
 void parent_process_exec(pid_t pid, char **cmd, char *cmd_path, int *status);
-void handle_operators(char **argv, char *cmd_line, char *operator,
-	int *exit_status, int cmd_idx);
+void handle_operators(char **argv, char *cmd_line,
+	char *operator, int *exit_status, int cmd_idx);
 
 char *_getenv(char *name);
 char *_getpath(char *cmd);

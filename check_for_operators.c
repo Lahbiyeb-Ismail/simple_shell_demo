@@ -19,15 +19,19 @@
 char *check_for_operator(char *cmd_line)
 {
 	int i;
+	char *and_operator = "&&";
+	char *or_operator = "||";
+	char *consecutive_operator = ";";
 
 	for (i = 0; cmd_line[i]; i++)
 	{
-		if (cmd_line[i] == ';')
-			return (";");
-		else if (cmd_line[i] == '&' && cmd_line[i + 1] == '&')
-			return ("&&");
-		else if (cmd_line[i] == '|' && cmd_line[i + 1] == '|')
-			return ("||");
+		if (cmd_line[i] == consecutive_operator[0])
+			return (consecutive_operator);
+		else if (cmd_line[i] == and_operator[0] &&
+			cmd_line[i + 1] == and_operator[1])
+			return (and_operator);
+		else if (cmd_line[i] == or_operator[0] && cmd_line[i + 1] == or_operator[1])
+			return (or_operator);
 	}
 
 	return (NULL);

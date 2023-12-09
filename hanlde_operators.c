@@ -44,26 +44,14 @@ void handle_operators(char **argv,
 		if (!cmd)
 			continue;
 
-		if (_strcmp(operator, "&&") == 0)
-		{
-			process_command(cmd, argv, cmd_idx, &status);
-			if (status == 0)
-				continue;
-			else
-				break;
-		}
-		else if (_strcmp(operator, "||") == 0)
-		{
-			process_command(cmd, argv, cmd_idx, &status);
-			if (status != 0)
-				continue;
-			else
-				break;
-		}
-		else
-			process_command(cmd, argv, cmd_idx, &status);
+		process_command(cmd, argv, cmd_idx, &status);
 
-		free(cmd_line);
-		free_memory(cmd);
+		if (_strcmp(operator, "&&") == 0)
+			if (status != 0)
+				break;
+
+		if (_strcmp(operator, "||") == 0)
+			if (status == 0)
+				break;
 	}
 }
