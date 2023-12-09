@@ -23,6 +23,7 @@ int main(int argc, char **argv)
 	char *operator = NULL;
 	/* Array to store the tokens of the cmd */
 	char **cmd = NULL;
+	char **multi_cmd = NULL;
 	int exit_status = 0, cmd_idx = 0;
 	(void)argc;
 
@@ -40,15 +41,18 @@ int main(int argc, char **argv)
 		cmd_idx++;
 
 		/* TODO: FIX THE MEMORY ALLOCATION LEAK */
-		operator = check_for_operator(_strdup(cmd_line));
+		operator = check_for_operator(cmd_line);
 
-		/* TODO: TEST WITH _strdup(cmd_line)*/
+			/* TODO: TEST WITH _strdup(cmd_line)*/
 		if (operator)
-			handle_operators(argv, _strdup(cmd_line),
+		{
+			multi_cmd = tokenize_command(cmd_line, operator);
+			handle_operators(argv, multi_cmd, cmd_line,
 				operator, &exit_status, cmd_idx);
+		}
+
 		else
 		{
-			free(operator);
 				/* Tokenize (split) the command and get the array of tokens */
 			cmd = tokenize_command(cmd_line, " \t\n");
 			if (!cmd)
@@ -56,6 +60,6 @@ int main(int argc, char **argv)
 			process_command(cmd, argv, cmd_idx, &exit_status);
 		}
 	} while (1);
-	free(cmd_line);
+	free_memory(multi_cmd);
 	free_memory(cmd);
 }

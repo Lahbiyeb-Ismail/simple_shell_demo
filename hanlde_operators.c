@@ -26,15 +26,12 @@
  *
  */
 
-void handle_operators(char **argv,
+void handle_operators(char **argv, char **multi_cmd,
 	char *cmd_line, char *operator, int *exit_status, int cmd_idx)
 {
-	char **multi_cmd = NULL;
 	char **cmd = NULL;
 	int i;
 	int status = (*exit_status);
-
-	multi_cmd = tokenize_command(cmd_line, operator);
 
 	for (i = 0; multi_cmd[i]; i++)
 	{
