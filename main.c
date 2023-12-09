@@ -23,7 +23,6 @@ int main(int argc, char **argv)
 	char *operator = NULL;
 	/* Array to store the tokens of the cmd */
 	char **cmd = NULL;
-	char **multi_cmd = NULL;
 	int exit_status = 0, cmd_idx = 0;
 	(void)argc;
 
@@ -45,12 +44,8 @@ int main(int argc, char **argv)
 
 			/* TODO: TEST WITH _strdup(cmd_line)*/
 		if (operator)
-		{
-			multi_cmd = tokenize_command(cmd_line, operator);
-			handle_operators(argv, multi_cmd, cmd_line,
+			handle_operators(argv, cmd_line,
 				operator, &exit_status, cmd_idx);
-		}
-
 		else
 		{
 				/* Tokenize (split) the command and get the array of tokens */
@@ -60,6 +55,6 @@ int main(int argc, char **argv)
 			process_command(cmd, argv, cmd_idx, &exit_status);
 		}
 	} while (1);
-	free_memory(multi_cmd);
+	free(operator);
 	free_memory(cmd);
 }
