@@ -57,3 +57,35 @@ char *handle_comments(char *cmd_line)
 	return (new_cmd_line);
 }
 
+/**
+ * check_for_comments - Checks for the presence of comments in a command line.
+ *
+ * Description: This function examines a command line string to determine
+ * if it contains comments.
+ * Comments are identified by the '#' character. If '#' is found at the
+ * beginning of the command line or if it is preceded by a space, tab,
+ * or semicolon, the function
+ *
+ * @cmd_line: The input command line.
+ *
+ * Return: 1 if comments are present, 0 if no comments are found.
+ */
+
+int check_for_comments(char *cmd_line)
+{
+	int i;
+
+	for (i = 0; cmd_line[i]; i++)
+	{
+		if (cmd_line[i] == '#')
+		{
+			if (i == 0)
+				return (1);
+			else if (cmd_line[i - 1] == ' ' || cmd_line[i - 1] == '\t' ||
+				cmd_line[i - 1] == ';')
+				return (1);
+		}
+	}
+
+	return (0);
+}
