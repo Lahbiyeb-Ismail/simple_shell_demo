@@ -89,4 +89,10 @@ void free_cd_memory(char *curr_dir, char *old_pwd, char *home_env);
 
 char *check_for_operator(char *cmd_line);
 
+int handle_alias(char **cmd);
+void print_alias(NEW_ALIAS *alias_arr);
+
+/* comment */
+void handle_var_replacement(char **cmd, int exit_status);
+
 #endif
