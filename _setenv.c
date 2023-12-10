@@ -31,7 +31,14 @@ int _setenv(char *envname, char *envval, int overwrite)
 		status = set_new_env(envname, envval);
 	/* Environment variable already exists, and 'overwrite' flag is set */
 	else
+	{
 		status = modify_env(envname, envval, overwrite);
+		if (status != 0)
+		{
+			free(env_val);
+			return (-1);
+		}
+	}
 
 	free(env_val), env_val = NULL;
 	return (status);
