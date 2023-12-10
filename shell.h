@@ -92,6 +92,4 @@ char *check_for_operator(char *cmd_line);
 int handle_alias(char **cmd);
 void print_alias(NEW_ALIAS *alias_arr);
 
-void handle_var_replacement(char **cmd, int exit_status);
-
 #endif
