@@ -53,6 +53,10 @@ int handle_builtin_cmd(char **cmd, char **argv, int *status, int cmd_idx)
 
 		free_memory(cmd);
 	}
+	else if (_strcmp(cmd[0], "alias") == 0)
+	{
+		exit_status = handle_alias(cmd);
+	}
 
 	return (exit_status);
 }

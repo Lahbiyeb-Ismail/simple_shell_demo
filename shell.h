@@ -10,6 +10,22 @@
 #include <sys/stat.h>
 
 
+/**
+ * struct new_alias - Array of env variables
+ *
+ * @name: alias name
+ * @value: alias value
+ *
+ * Description: custom Environ structure
+ *
+ */
+
+typedef struct new_alias
+{
+	char *name;
+	char *value;
+} NEW_ALIAS;
+
 /*An array of strings representing the environment variables.*/
 extern char **environ;
 
@@ -72,8 +88,5 @@ char *cd_to(char *path, char *curr_dir);
 void free_cd_memory(char *curr_dir, char *old_pwd, char *home_env);
 
 char *check_for_operator(char *cmd_line);
-
-char *handle_comments(char *cmd_line);
-int check_for_comments(char *cmd_line);
 
 #endif
