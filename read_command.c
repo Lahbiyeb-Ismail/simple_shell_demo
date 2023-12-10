@@ -29,6 +29,8 @@ char *read_command(void)
 		return (NULL);
 	}
 
+	cmd_line = handle_comments(cmd_line);
+
 	return (cmd_line);
 }
 
