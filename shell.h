@@ -66,7 +66,7 @@ int check_if_builtin_cmd(char *cmd);
 int handle_builtin_cmd(char **cmd, char **argv, int *exit_status,
 	int cmd_idx);
 int exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx);
-
+int handle_env(char **cmd, char **argv, int cmd_idx);
 
 int print_env(char **cmd);
 
@@ -76,8 +76,7 @@ int _setenv(char *envname, char *envval, int overwrite);
 int set_new_env(char *envname, char *envval);
 int modify_env(char *envname, char *envval, int overwrite);
 char *construct_env_str(char *envname, char *envval);
-void print_env_error(char **cmd, int *exit_status, char *shell_name,
-	int cmd_idx);
+int print_env_error(char **cmd, char *shell_name, int cmd_idx);
 
 int _unsetenv(char *envname);
 
