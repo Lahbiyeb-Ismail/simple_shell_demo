@@ -30,7 +30,15 @@ char *read_command(void)
 	}
 
 	if (check_for_comments(cmd_line) == 1)
-		cmd_line = handle_comments(cmd_line);
+	{
+		char *new_cmd_line = handle_comments(cmd_line);
+
+		/* Free the original memory allocated by getline */
+		free(cmd_line);
+
+		/* Update cmd_line to the new dynamically allocated string (or NULL) */
+		cmd_line = new_cmd_line;
+	}
 
 	return (cmd_line);
 }
