@@ -46,13 +46,13 @@ void handle_operators(char **argv,
 
 		process_command(cmd, argv, cmd_idx, &status);
 
-		if (_strcmp(operator, "&&") == 0)
-			if (status != 0)
-				break;
-
-		if (_strcmp(operator, "||") == 0)
-			if (status == 0)
-				break;
+		if ((_strcmp(operator, "&&") == 0 && status != 0) ||
+			(_strcmp(operator, "||") == 0 && status == 0))
+		{
+			(*exit_status) = status;
+			free(multi_cmd);
+			return;
+		}
 	}
 
 	free(multi_cmd);
