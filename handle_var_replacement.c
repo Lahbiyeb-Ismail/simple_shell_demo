@@ -50,6 +50,7 @@ void handle_var_replacement(char **cmd, int exit_status)
 		{
 			env_key = strtok(cmd[1], "$");
 			env_val = _getenv(env_key);
+			free(cmd[1]);
 			cmd[1] = env_val;
 		}
 	}
