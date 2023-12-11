@@ -18,6 +18,7 @@
  *
  */
 
+/* TODO: FIX MEMORY ALLOCATION LEAK*/
 int _setenv(char *envname, char *envval, int overwrite)
 {
 	char *env_val = NULL;
@@ -30,9 +31,7 @@ int _setenv(char *envname, char *envval, int overwrite)
 		status = set_new_env(envname, envval);
 	/* Environment variable already exists, and 'overwrite' flag is set */
 	else
-	{
 		status = modify_env(envname, envval, overwrite);
-	}
 
 	free(env_val), env_val = NULL;
 	return (status);
@@ -104,7 +103,10 @@ int modify_env(char *envname, char *envval, int overwrite)
 	new_env = construct_env_str(envname, envval);
 
 	if (!new_env)
+	{
+		free(new_env);
 		return (-1);
+	}
 
 	while (environ[i])
 	{
@@ -112,8 +114,7 @@ int modify_env(char *envname, char *envval, int overwrite)
 		{
 			if (overwrite == 1)
 			{
-				/* Free the old env variable before modifying it with the new env */
-				free(environ[i]);
+				/* Modify the existing env variable with the new env */
 				environ[i] = new_env;
 				return (0);
 			}
