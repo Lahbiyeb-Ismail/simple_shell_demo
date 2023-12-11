@@ -73,7 +73,8 @@ int handle_env(char **cmd, char **argv, int cmd_idx)
 	while (cmd[cmd_len] != NULL)
 		cmd_len++;
 
-	if (cmd_len < 2 || (cmd_len < 3 && _strcmp(cmd[0], "setenv") == 0)) {
+	if (cmd_len < 2 || (cmd_len < 3 && _strcmp(cmd[0], "setenv") == 0))
+	{
 		exit_status = print_env_error(cmd, argv[0], cmd_idx);
 		return (exit_status);
 	}

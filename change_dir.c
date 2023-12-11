@@ -70,12 +70,22 @@ char *cd_home(char *curr_dir, char *home_val)
 {
 	char *dir = NULL;
 
-	/* Set the target directory to the user's home directory */
-	dir = home_val;
-
-	/* Update the environment variables 'PWD' and 'OLDPWD' */
-	_setenv("PWD", dir, 1);
-	_setenv("OLDPWD", curr_dir, 1);
+	/* If the !home_val Set the target directory to the user's curr_dir */
+	if (!home_val)
+	{
+		dir = curr_dir;
+		/* Update the environment variables 'PWD' and 'OLDPWD' */
+		_setenv("PWD", dir, 1);
+		_setenv("OLDPWD", dir, 1);
+	}
+	/* Set the target directory to the user's Home dir */
+	else
+	{
+		dir = home_val;
+		/* Update the environment variables 'PWD' and 'OLDPWD' */
+		_setenv("PWD", dir, 1);
+		_setenv("OLDPWD", curr_dir, 1);
+	}
 
 	return (dir);
 }
