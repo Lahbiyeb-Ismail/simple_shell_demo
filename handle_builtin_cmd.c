@@ -27,19 +27,18 @@ int handle_builtin_cmd(char **cmd, char **argv, int *status, int cmd_idx)
 		/* Check if the command is the "setenv" or "unsetenv" built-in command */
 	else if (_strcmp(cmd[0], "setenv") == 0 || _strcmp(cmd[0], "unsetenv") == 0)
 	{
-		/* Check if the required number of arguments is provided */
-		if ((!cmd[1] || (_strcmp(cmd[0], "setenv") == 0)) && !cmd[2])
-		{
+		int cmd_len = 0;
+
+		while (cmd[cmd_len] != NULL)
+			cmd_len++;
+
+		if (cmd_len < 2 || (cmd_len < 3 && _strcmp(cmd[0], "setenv") == 0))
 			exit_status = print_env_error(cmd, argv[0], cmd_idx);
-			return (exit_status);
+		else
+		{
+			exit_status = handle_env(cmd);
+			free_memory(cmd);
 		}
-
-		if (_strcmp(cmd[0], "setenv") == 0)
-			exit_status = _setenv(cmd[1], cmd[2], 1);
-		else if (_strcmp(cmd[0], "unsetenv") == 0)
-			exit_status = _unsetenv(cmd[1]);
-
-		free_memory(cmd);
 	}
 	else if (_strcmp(cmd[0], "cd") == 0)
 	{
@@ -72,24 +71,15 @@ int handle_builtin_cmd(char **cmd, char **argv, int *status, int cmd_idx)
  * If an incorrect number of arguments is provided, it prints an error message.
  *
  * @cmd: Array of tokens representing the command and its arguments.
- * @argv: An array of strings representing the command-line arguments.
- * @cmd_idx: The index of the command in the shell's command history.
  *
  * Return: The exit status after handling the environment command.
  */
 
-int handle_env(char **cmd, char **argv, int cmd_idx)
+int handle_env(char **cmd)
 {
 	int exit_status;
-	int cmd_len = 0;
 
-	while (cmd[cmd_len] != NULL)
-		cmd_len++;
-
-	/* Check if the required number of arguments is provided */
-	if (cmd_len < 2 || (cmd_len < 3 && _strcmp(cmd[0], "setenv") == 0))
-		exit_status = print_env_error(cmd, argv[0], cmd_idx);
-	else if (_strcmp(cmd[0], "setenv") == 0)
+	if (_strcmp(cmd[0], "setenv") == 0)
 		exit_status = _setenv(cmd[1], cmd[2], 1);
 	else if (_strcmp(cmd[0], "unsetenv") == 0)
 		exit_status = _unsetenv(cmd[1]);
