@@ -26,7 +26,21 @@ int handle_builtin_cmd(char **cmd, char **argv, int *status, int cmd_idx)
 		exit_status = print_env(cmd);
 		/* Check if the command is the "setenv" or "unsetenv" built-in command */
 	else if (_strcmp(cmd[0], "setenv") == 0 || _strcmp(cmd[0], "unsetenv") == 0)
-		exit_status = handle_env(cmd, argv, cmd_idx);
+	{
+		/* Check if the required number of arguments is provided */
+		if ((!cmd[1] || (_strcmp(cmd[0], "setenv") == 0)) && !cmd[2])
+		{
+			exit_status = print_env_error(cmd, argv[0], cmd_idx);
+			return (exit_status);
+		}
+
+		if (_strcmp(cmd[0], "setenv") == 0)
+			exit_status = _setenv(cmd[1], cmd[2], 1);
+		else if (_strcmp(cmd[0], "unsetenv") == 0)
+			exit_status = _unsetenv(cmd[1]);
+
+		free_memory(cmd);
+	}
 	else if (_strcmp(cmd[0], "cd") == 0)
 	{
 		exit_status = change_dir(cmd);
