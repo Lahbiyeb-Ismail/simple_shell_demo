@@ -22,7 +22,8 @@
 
 char *handle_comments(char *cmd_line)
 {
-	int i, new_size;
+	int i;
+	int new_size = _strlen(cmd_line);
 	char *new_cmd_line = NULL;
 
 	for (i = 0; cmd_line[i]; i++)
@@ -54,6 +55,7 @@ char *handle_comments(char *cmd_line)
 		}
 	}
 
+	free(cmd_line);
 	return (new_cmd_line);
 }
 
