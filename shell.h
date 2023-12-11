@@ -66,7 +66,7 @@ int check_if_builtin_cmd(char *cmd);
 int handle_builtin_cmd(char **cmd, char **argv, int *exit_status,
 	int cmd_idx);
 int exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx);
-int handle_env(char **cmd);
+int handle_env(char **cmd, char **argv, int cmd_idx);
 
 int print_env(char **cmd);
 
