@@ -54,4 +54,6 @@ void handle_operators(char **argv,
 			if (status == 0)
 				break;
 	}
+
+	free(multi_cmd);
 }

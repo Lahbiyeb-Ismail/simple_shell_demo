@@ -56,6 +56,5 @@ int main(int argc, char **argv)
 			process_command(cmd, argv, cmd_idx, &exit_status);
 		}
 	} while (1);
-	free(operator);
 	free_memory(cmd);
 }
