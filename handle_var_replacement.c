@@ -28,6 +28,10 @@ void handle_var_replacement(char **cmd, int exit_status)
 
 	pid_t pid = getpid();
 
+	/* Check if cmd[1] exists */
+	if (cmd[1] == NULL)
+		return;
+
 	/* Check if the command is "echo" and the second argument starts with '$' */
 	if (_strcmp(cmd[0], "echo") == 0 && cmd[1][0] == '$' && cmd[1][1])
 	{
