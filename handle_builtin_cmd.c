@@ -28,21 +28,9 @@ int handle_builtin_cmd(char **cmd, char **argv, int *status, int cmd_idx)
 	else if (_strcmp(cmd[0], "setenv") == 0 || _strcmp(cmd[0], "unsetenv") == 0)
 		exit_status = handle_env(cmd, argv, cmd_idx);
 	else if (_strcmp(cmd[0], "cd") == 0)
-	{
-		exit_status = change_dir(cmd);
-
-		if (exit_status == -1)
-		{
-			print_shell_error(argv[0], cmd_idx, cmd, "can't cd to ");
-			return (2);
-		}
-
-		free_memory(cmd);
-	}
+		exit_status = handle_cd(cmd, argv, cmd_idx);
 	else if (_strcmp(cmd[0], "alias") == 0)
-	{
 		exit_status = handle_alias(cmd);
-	}
 
 	return (exit_status);
 }
@@ -82,6 +70,40 @@ int handle_env(char **cmd, char **argv, int cmd_idx)
 		exit_status = _setenv(cmd[1], cmd[2], 1);
 	else if (_strcmp(cmd[0], "unsetenv") == 0)
 		exit_status = _unsetenv(cmd[1]);
+
+	free_memory(cmd);
+	return (exit_status);
+}
+
+
+/**
+ * handle_cd -  Handles the execution of the 'cd' command in the shell.
+ *
+ * Description: This function calls the change_dir function to perform the
+ * actual directory change based on the provided 'cmd' array, which is expected
+ * to contain the 'cd' command and its arguments. The function also frees
+ * memory allocated for the 'cmd' array after the directory change operation.
+ *
+ * @cmd: Array of strings representing the 'cd' command and its arguments.
+ * @argv: Array of strings representing the cmd_line arguments of the shell.
+ * @cmd_idx: Index of the 'cd' command in the 'argv' array.
+ *
+ * Return: An integer representing the exit status of the 'cd' command.
+ * 0: Success
+ * 2: Error (failed to change directory)
+ */
+
+int handle_cd(char **cmd, char **argv, int cmd_idx)
+{
+	int exit_status = 0;
+
+	exit_status = change_dir(cmd);
+
+	if (exit_status == -1)
+	{
+		print_shell_error(argv[0], cmd_idx, cmd, "can't cd to ");
+		return (2);
+	}
 
 	free_memory(cmd);
 	return (exit_status);

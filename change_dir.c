@@ -1,7 +1,5 @@
 #include "shell.h"
 
-
-
 /**
  * change_dir - Handle execution of built-in commands
  *
@@ -141,11 +139,10 @@ char *cd_to(char *path, char *curr_dir)
 {
 	char *dir = path;
 
-	/* Set the current working directory to the specified path */
-	_setenv("PWD", path, 1);
-
 	/* Update the environment variable 'OLDPWD' */
-	_setenv("OLDPWD", curr_dir, 1);
+	_setenv("OLDPWD", _getenv("PWD"), 1);
+	/* Set the current working directory to the specified path */
+	_setenv("PWD", curr_dir, 1);
 
 	return  (dir);
 }
