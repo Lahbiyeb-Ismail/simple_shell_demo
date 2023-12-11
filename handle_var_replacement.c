@@ -24,6 +24,7 @@ void handle_var_replacement(char **cmd, int exit_status)
 {
 	char *env_key = NULL;
 	char *env_val = NULL;
+	char *temp = NULL;
 
 	pid_t pid = getpid();
 
@@ -32,11 +33,19 @@ void handle_var_replacement(char **cmd, int exit_status)
 	{
 		/* Replace "$?" with the exit status */
 		if (cmd[1][1] == '?')
-			cmd[1] = _itoa(exit_status);
+		{
+			temp = _itoa(exit_status);
+			free(cmd[1]);
+			cmd[1] = temp;
+		}
 		/* Replace "$$" with the process ID */
 		else if (cmd[1][1] == '$')
-			cmd[1] = _itoa(pid);
-		/* Replace environment variables with their values */
+		{
+			temp = _itoa(pid);
+			free(cmd[1]);
+			cmd[1] = temp;
+		}
+	/* Replace environment variables with their values */
 		else
 		{
 			env_key = strtok(cmd[1], "$");
