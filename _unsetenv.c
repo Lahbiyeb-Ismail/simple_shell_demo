@@ -1,18 +1,19 @@
 #include "shell.h"
 
 /**
- * _unsetenv - Entry Point
+ * _unsetenv - Unset (remove) an environment variable.
  *
- * Description: This function checks if an environment variable
- * with the given name already exists. If it does not exist, it
- * dynamically allocates memory to create a new environment variable in
- * the format "name=value" and adds it to the current environment
- * variables. If the environment variable already exists
- * and the 'overwrite' flag is not set, the function does nothing.
+ * Description: This function unset (remove) the specified environment
+ * variable by searching for its name in the `environ` array.
+ * If the environment variable is found, it is removed by shifting the elements
+ * in the array. Memory allocated for the environment variable's
+ * value is freed.
+ * If the environment variable does not exist, the function returns 0.
  *
- * @envname: The name of the environment variable.
+ * @envname: The name of the environment variable to unset.
  *
- * Return: Returns 0 on success, or -1 on error,
+ * Return: 0 on success (environment variable removed), or -1 if the variable
+ * does not exist or if an error occurs during the removal process.
  *
  */
 

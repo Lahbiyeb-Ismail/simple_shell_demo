@@ -11,7 +11,7 @@
  * @exit_status: The exit status of the previous command.
  * @cmd_idx: Index of the command in the token array.
  *
- * Return: void
+ * Return: The exit status value.
  */
 
 int exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx)
