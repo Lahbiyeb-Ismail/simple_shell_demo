@@ -155,6 +155,14 @@ void set_alias(Alias **aliases, char *name, char *value)
 	if (alias)
 	{
 			/* If the alias already exists, update its value */
+		char *new_value = _strdup(value);
+
+		if (!new_value)
+		{
+			perror("Error: Memory allocation failed");
+			exit(EXIT_FAILURE);
+		}
+
 		free(alias->value);
 		alias->value = _strdup(value);
 	}
@@ -162,8 +170,23 @@ void set_alias(Alias **aliases, char *name, char *value)
 	{
 		/* Otherwise, create a new alias and add it to the list */
 		alias = malloc(sizeof(Alias));
+		if (!alias)
+		{
+			perror("Error: Memory allocation failed");
+			exit(EXIT_FAILURE);
+		}
+
 		alias->name = _strdup(name);
 		alias->value = _strdup(value);
+
+		if (!alias->name || !alias->value)
+		{
+			perror("Error: Memory allocation failed");
+			free(alias->name);
+			free(alias->value);
+			free(alias);
+			exit(EXIT_FAILURE);
+		}
 		alias->next = *aliases;
 		*aliases = alias;
 	}
