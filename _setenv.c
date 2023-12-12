@@ -66,15 +66,16 @@ int set_new_env(char *envname, char *envval)
 		env_count++;
 
 	/* Construct the environment variable string: "name=value" */
-	new_env = construct_env_str(envname, envval);
+	new_env = construct_env_str(&new_env, envname, envval);
 
 	if (!new_env)
 		return (-1);
 
 	/* Add the new environment variable to the 'environ' array */
-	environ[env_count] = new_env;
+	environ[env_count] = _strdup(new_env);
 	environ[env_count + 1] = NULL;
 
+	free(new_env);
 	return (0);
 }
 
@@ -101,7 +102,7 @@ int modify_env(char *envname, char *envval, int overwrite)
 	int i = 0;
 
 	/* Construct the environment variable string: "name=value" */
-	new_env = construct_env_str(envname, envval);
+	new_env = construct_env_str(&new_env, envname, envval);
 
 	if (!new_env)
 	{
@@ -148,21 +149,23 @@ int modify_env(char *envname, char *envval, int overwrite)
  * allocation fails.
  */
 
-char *construct_env_str(char *envname, char *envval)
+char *construct_env_str(char **new_env, char *envname, char *envval)
 {
-	char *new_env = NULL;
 
 	/* Allocate memory for the new environment variable */
-	new_env = malloc(_strlen(envname) + _strlen(envval) + 2);
+	*new_env = malloc(_strlen(envname) + _strlen(envval) + 2);
 
 	/* Check if memory allocation was successful */
 	if (!new_env)
+	{
+		free(*new_env);
 		return (NULL);
+	}
 
 	/* Construct the environment variable string: "name=value" */
-	_strcpy(new_env, envname);
-	_strcat(new_env, "=");
-	_strcat(new_env, envval);
+	_strcpy(*new_env, envname);
+	_strcat(*new_env, "=");
+	_strcat(*new_env, envval);
 
-	return (new_env);
+	return (*new_env);
 }
