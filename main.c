@@ -23,14 +23,19 @@ int main(int argc, char **argv)
 	char *operator = NULL;
 	/* Array to store the tokens of the cmd */
 	char **cmd = NULL;
-	int exit_status = 0, cmd_idx = 0;
+	int exit_status = 0, cmd_idx = 0, is_comment = 1;
 	(void)argc;
 
 	do {
 		/* Prompt user and read the command */
 		cmd_line = read_command();
+		is_comment = check_for_comments(cmd_line);
+		if (is_comment == 1)
+			cmd_line = handle_comments(cmd_line);
 
-		if (!cmd_line)
+		if (!cmd_line && is_comment == 1)
+			continue;
+		else if (!cmd_line && is_comment == 0)
 		{
 			/* Print a new line befor exit if we are in the interactive mode */
 			if (isatty(STDIN_FILENO))
@@ -40,16 +45,12 @@ int main(int argc, char **argv)
 		}
 		cmd_idx++;
 
-		/* TODO: FIX THE MEMORY ALLOCATION LEAK */
 		operator = check_for_operator(cmd_line);
-
-			/* TODO: TEST WITH _strdup(cmd_line)*/
 		if (operator)
 			handle_operators(argv, cmd_line,
 				operator, &exit_status, cmd_idx);
 		else
 		{
-				/* Tokenize (split) the command and get the array of tokens */
 			cmd = tokenize_command(cmd_line, " \t\n");
 			if (!cmd)
 				continue;

@@ -29,9 +29,6 @@ char *read_command(void)
 		return (NULL);
 	}
 
-	if (check_for_comments(cmd_line) == 1)
-		return (handle_comments(cmd_line));
-
 	return (cmd_line);
 }
 
