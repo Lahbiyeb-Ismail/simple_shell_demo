@@ -23,10 +23,21 @@ int main(int argc, char **argv)
 	/* Array to store the tokens of the cmd */
 	char **cmd = NULL;
 	int exit_status = 0, cmd_idx = 0, is_comment = 0;
-	(void)argc;
+	FILE *file = NULL;
+
+		/* If a filename is provided as an argument, open the file */
+	if (argc > 1)
+	{
+		file = fopen(argv[1], "r");
+		if (!file)
+		{
+			print_file_error(argv[0], cmd_idx, argv[1]);
+			exit(2);
+		}
+	}
 
 	do {
-		cmd_line = read_and_handle_comments(&is_comment);
+		cmd_line = read_and_handle_comments(&is_comment, file, argc);
 
 		if (!cmd_line)
 		{
@@ -38,6 +49,10 @@ int main(int argc, char **argv)
 
 		handle_command_exec(cmd, cmd_line, argv, cmd_idx, &exit_status);
 	} while (1);
+
+	 /* Close the file if it was opened */
+	if (file)
+		fclose(file);
 
 	free_memory(cmd);
 	return (0);
@@ -51,13 +66,23 @@ int main(int argc, char **argv)
  * then checks and handles comments if present.
  *
  * @is_comment: Pointer to the comment flag.
+ * @file: The file to read from.
+ * @argc: The number of command-line arguments.
+ *
  *
  * Return: Pointer to the command line.
  */
 
-char *read_and_handle_comments(int *is_comment)
+char *read_and_handle_comments(int *is_comment, FILE *file, int argc)
 {
-	char *cmd_line = read_command();
+	char *cmd_line = NULL;
+
+	if (file)
+			/* If a file is provided, read from the file instead of stdin */
+		cmd_line = read_command(file, argc);
+	else
+		cmd_line = read_command(stdin, argc);
+
 	*is_comment = check_for_comments(cmd_line);
 
 	if (*is_comment == 1)

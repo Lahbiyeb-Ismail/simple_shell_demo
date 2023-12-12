@@ -35,11 +35,12 @@ void print_shell_error(char *shell_name, int cmd_idx, char **cmd,
 	char *err_msg);
 
 void handle_exit(int is_comment, int *exit_status);
-char *read_and_handle_comments(int *is_comment);
+char *read_and_handle_comments(int *is_comment, FILE *file, int argc);
 void handle_command_exec(char **cmd, char *cmd_line, char **argv,
 	int cmd_idx, int *exit_status);
 
-char *read_command(void);
+char *read_command(FILE *stream, int argc);
+char *read_command_from_file(FILE *file);
 char **tokenize_command(char *cmd, char *delim);
 size_t tokens_count(char *cmd_line, char *delim);
 char **tokens_array(size_t count, char *cmd_line, char *delim, char *token);
@@ -83,6 +84,7 @@ int set_new_env(char *envname, char *envval);
 int modify_env(char *envname, char *envval, int overwrite);
 char *construct_env_str(char **new_env, char *envname, char *envval);
 int print_env_error(char **cmd, char *shell_name, int cmd_idx);
+void print_file_error(char *shell_name, int cmd_idx, char *file_name);
 
 int _unsetenv(char *envname);
 
