@@ -41,18 +41,19 @@ int main(int argc, char **argv)
 
 		if (!cmd_line)
 		{
-			handle_exit(is_comment, &exit_status);
+			handle_exit(is_comment, &exit_status, file);
 			continue;
 		}
-
 		cmd_idx++;
-
 		handle_command_exec(cmd, cmd_line, argv, cmd_idx, &exit_status);
 	} while (1);
 
 	 /* Close the file if it was opened */
 	if (file)
+	{
 		fclose(file);
+		file = NULL;
+	}
 
 	free_memory(cmd);
 	return (0);
@@ -101,12 +102,16 @@ char *read_and_handle_comments(int *is_comment, FILE *file, int argc)
  *
  * @is_comment: Flag indicating if the command line is a comment.
  * @exit_status: Pointer to the exit status variable.
+ * @file: The file to read from.
  *
  * Return: void
  */
 
-void handle_exit(int is_comment, int *exit_status)
+void handle_exit(int is_comment, int *exit_status, FILE *file)
 {
+	if (file)
+		exit(*exit_status);
+
 	if (!is_comment)
 	{
 		if (isatty(STDIN_FILENO))
