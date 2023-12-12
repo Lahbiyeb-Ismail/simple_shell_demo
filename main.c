@@ -110,7 +110,11 @@ char *read_and_handle_comments(int *is_comment, FILE *file, int argc)
 void handle_exit(int is_comment, int *exit_status, FILE *file)
 {
 	if (file)
+	{
+		fclose(file);
+		file = NULL;
 		exit(*exit_status);
+	}
 
 	if (!is_comment)
 	{
