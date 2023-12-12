@@ -23,11 +23,12 @@
  * @exit_status: Pointer to the exit status variable, which is updated by
  * the function.
  * @cmd_idx: Index of the command in the token array.
+ * @aliases: A pointer to the head of the linked list containing the aliases.
  *
  */
 
-void handle_operators(char **argv,
-	char *cmd_line, char *operator, int *exit_status, int cmd_idx)
+void handle_operators(char **argv, char *cmd_line, char *operator,
+	int *exit_status, int cmd_idx, Alias **aliases)
 {
 	char **multi_cmd = NULL;
 	char **cmd = NULL;
@@ -44,7 +45,7 @@ void handle_operators(char **argv,
 		if (!cmd)
 			continue;
 
-		process_command(cmd, argv, cmd_idx, &status);
+		process_command(cmd, argv, cmd_idx, &status, aliases);
 
 		if ((_strcmp(operator, "&&") == 0 && status != 0) ||
 			(_strcmp(operator, "||") == 0 && status == 0))

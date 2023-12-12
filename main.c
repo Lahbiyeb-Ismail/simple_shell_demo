@@ -24,6 +24,7 @@ int main(int argc, char **argv)
 	char **cmd = NULL;
 	int exit_status = 0, cmd_idx = 0, is_comment = 0;
 	FILE *file = NULL;
+	Alias *aliases = NULL;
 
 		/* If a filename is provided as an argument, open the file */
 	if (argc > 1)
@@ -45,7 +46,7 @@ int main(int argc, char **argv)
 			continue;
 		}
 		cmd_idx++;
-		handle_command_exec(cmd, cmd_line, argv, cmd_idx, &exit_status);
+		handle_command_exec(cmd, cmd_line, argv, cmd_idx, &exit_status, &aliases);
 	} while (1);
 
 	 /* Close the file if it was opened */
@@ -54,7 +55,7 @@ int main(int argc, char **argv)
 		fclose(file);
 		file = NULL;
 	}
-
+	free_aliases(aliases);
 	free_memory(cmd);
 	return (0);
 }
@@ -138,12 +139,13 @@ void handle_exit(int is_comment, int *exit_status, FILE *file)
  * @argv: An array of strings representing the command-line arguments.
  * @cmd_idx: The index of the command.
  * @exit_status: Pointer to the exit status variable.
+ * @aliases: A pointer to the head of the linked list containing the aliases.
  *
  * Return: void
  */
 
 void handle_command_exec(char **cmd, char *cmd_line, char **argv,
-	int cmd_idx, int *exit_status)
+	int cmd_idx, int *exit_status, Alias **aliases)
 {
 	char *operator = NULL;
 
@@ -151,12 +153,12 @@ void handle_command_exec(char **cmd, char *cmd_line, char **argv,
 
 	if (operator)
 		handle_operators(argv, cmd_line,
-			operator, exit_status, cmd_idx);
+			operator, exit_status, cmd_idx, aliases);
 	else
 	{
 		cmd = tokenize_command(cmd_line, " \t\n");
 		if (!cmd)
 			return;
-		process_command(cmd, argv, cmd_idx, exit_status);
+		process_command(cmd, argv, cmd_idx, exit_status, aliases);
 	}
 }

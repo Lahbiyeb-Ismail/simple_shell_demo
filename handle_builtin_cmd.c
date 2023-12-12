@@ -10,11 +10,13 @@
  * @argv: An array of strings representing the command-line arguments.
  * @status: pointer to the exit status of the previous command.
  * @cmd_idx: The index of the command in the shell's command history.
+ * @aliases: A pointer to the head of the linked list containing the aliases.
  *
  * Return: The updated exit status after executing the built-in command.
  */
 
-int handle_builtin_cmd(char **cmd, char **argv, int *status, int cmd_idx)
+int handle_builtin_cmd(char **cmd, char **argv, int *status, int cmd_idx,
+	Alias **aliases)
 {
 	int exit_status = (*status);
 
@@ -30,7 +32,10 @@ int handle_builtin_cmd(char **cmd, char **argv, int *status, int cmd_idx)
 	else if (_strcmp(cmd[0], "cd") == 0)
 		exit_status = handle_cd(cmd, argv, cmd_idx);
 	else if (_strcmp(cmd[0], "alias") == 0)
-		exit_status = handle_alias(cmd);
+	{
+		exit_status = handle_alias_command(cmd, aliases);
+		free_memory(cmd);
+	}
 
 	return (exit_status);
 }

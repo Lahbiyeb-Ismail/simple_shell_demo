@@ -20,17 +20,19 @@
  * @cmd_idx: Index of the command in the token array.
  * @exit_status: Pointer to the exit status variable, which is updated by
  * the function.
+ * @aliases: A pointer to the head of the linked list containing the aliases.
  *
  */
 
-void process_command(char **cmd, char **argv, int cmd_idx, int *exit_status)
+void process_command(char **cmd, char **argv, int cmd_idx, int *exit_status,
+	Alias **aliases)
 {
 	int status = (*exit_status);
 
 	handle_var_replacement(cmd, status);
 
 	if (check_if_builtin_cmd(cmd[0]))
-		(*exit_status) = handle_builtin_cmd(cmd, argv, &status, cmd_idx);
+		(*exit_status) = handle_builtin_cmd(cmd, argv, &status, cmd_idx, aliases);
 	else
 	/* Execute the command and get the exit status */
 		(*exit_status) = exec_command(cmd, argv, cmd_idx, &status);
