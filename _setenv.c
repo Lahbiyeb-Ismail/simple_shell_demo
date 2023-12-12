@@ -1,16 +1,5 @@
 #include "shell.h"
 
-void free_environ(void)
-{
-	int env_count = 0;
-
-	while (environ[env_count])
-	{
-		free(environ[env_count]);
-		env_count++;
-	}
-}
-
 /**
  * _setenv - Sets a new environment variable with the specified name and value.
  *
@@ -83,12 +72,9 @@ int set_new_env(char *envname, char *envval)
 		return (-1);
 
 	/* Add the new environment variable to the 'environ' array */
-	environ[env_count] = _strdup(new_env);
+	environ[env_count] = new_env;
 	environ[env_count + 1] = NULL;
 
-	free(new_env);
-
-	atexit(free_environ);
 	return (0);
 }
 
@@ -153,6 +139,8 @@ int modify_env(char *envname, char *envval, int overwrite)
  * "name=value" for a given environment variable. The caller is responsible for
  * freeing the allocated memory when it is no longer needed.
  *
+ * @new_env: Pointer to a char pointer that will store the newly constructed
+ * env string.
  * @envname: The name of the environment variable.
  * @envval: The value to be assigned to the environment variable.
  *
