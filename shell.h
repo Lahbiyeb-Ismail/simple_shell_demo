@@ -34,6 +34,11 @@ void print_shell_prompt(void);
 void print_shell_error(char *shell_name, int cmd_idx, char **cmd,
 	char *err_msg);
 
+void handle_exit(int is_comment, int *exit_status);
+char *read_and_handle_comments(int *is_comment);
+void handle_command_exec(char **cmd, char *cmd_line, char **argv,
+	int cmd_idx, int *exit_status);
+
 char *read_command(void);
 char **tokenize_command(char *cmd, char *delim);
 size_t tokens_count(char *cmd_line, char *delim);
