@@ -1,5 +1,16 @@
 #include "shell.h"
 
+void free_environ(void)
+{
+	int env_count = 0;
+
+	while (environ[env_count])
+	{
+		free(environ[env_count]);
+		env_count++;
+	}
+}
+
 /**
  * _setenv - Sets a new environment variable with the specified name and value.
  *
@@ -76,6 +87,8 @@ int set_new_env(char *envname, char *envval)
 	environ[env_count + 1] = NULL;
 
 	free(new_env);
+
+	atexit(free_environ);
 	return (0);
 }
 
