@@ -77,6 +77,9 @@ int check_for_comments(char *cmd_line)
 {
 	int i;
 
+	if (!cmd_line)
+		return (0);
+
 	for (i = 0; cmd_line[i]; i++)
 	{
 		if (cmd_line[i] == '#')
