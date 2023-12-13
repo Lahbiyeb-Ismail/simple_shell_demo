@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 {
 	/* Buffer to store the user's input cmd */
 	char *cmd_line = NULL;
-	char *new_env = NULL;
+	char *new_env = malloc(1024);
 	/* Array to store the tokens of the cmd */
 	char **cmd = NULL;
 	int exit_status = 0, cmd_idx = 0, is_comment = 0;
