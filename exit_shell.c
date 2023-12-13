@@ -14,7 +14,8 @@
  * Return: The exit status value.
  */
 
-int exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx)
+int exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx,
+	Alias **aliases)
 {
 	int exit_val = (*exit_status);
 	char *err_msg = "Illegal number";
@@ -34,6 +35,7 @@ int exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx)
 
 	/* Free memory allocated for the command*/
 	free_memory(cmd);
+	free_aliases(*aliases);
 
 	/* Exit the shell with the provided exit status  */
 	exit(exit_val);

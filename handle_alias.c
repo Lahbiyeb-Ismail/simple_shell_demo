@@ -88,7 +88,9 @@ void print_aliases(Alias *aliases)
 	{
 		write(STDOUT_FILENO, current->name, _strlen(current->name));
 		write(STDOUT_FILENO, "=", 1);
+		write(STDOUT_FILENO, "'", 1);
 		write(STDOUT_FILENO, current->value, _strlen(current->value));
+		write(STDOUT_FILENO, "'", 1);
 		write(STDOUT_FILENO, "\n", 1);
 		current = current->next;
 	}
@@ -164,7 +166,7 @@ void set_alias(Alias **aliases, char *name, char *value)
 		}
 
 		free(alias->value);
-		alias->value = _strdup(value);
+		alias->value = new_value;
 	}
 	else
 	{

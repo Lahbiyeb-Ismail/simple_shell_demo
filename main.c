@@ -43,6 +43,7 @@ int main(int argc, char **argv)
 		if (!cmd_line)
 		{
 			handle_exit(is_comment, &exit_status, file);
+			free_aliases(aliases);
 			continue;
 		}
 		cmd_idx++;
@@ -55,7 +56,6 @@ int main(int argc, char **argv)
 		fclose(file);
 		file = NULL;
 	}
-	free_aliases(aliases);
 	free_memory(cmd);
 	return (0);
 }

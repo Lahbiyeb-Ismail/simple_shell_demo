@@ -22,7 +22,7 @@ int handle_builtin_cmd(char **cmd, char **argv, int *status, int cmd_idx,
 
 	/* Check if the command is the "exit" built-in command */
 	if (_strcmp(cmd[0], "exit") == 0)
-		exit_status = exit_shell(cmd, argv, status, cmd_idx);
+		exit_status = exit_shell(cmd, argv, status, cmd_idx, aliases);
 	/* Check if the command is the "env" built-in command */
 	else if (_strcmp(cmd[0], "env") == 0)
 		exit_status = print_env(cmd);
