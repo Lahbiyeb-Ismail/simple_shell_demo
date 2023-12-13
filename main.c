@@ -52,14 +52,12 @@ int main(int argc, char **argv)
 		cmd_idx++;
 		handle_command_exec(cmd, cmd_line, argv, cmd_idx, &exit_status, &aliases, &new_env);
 	} while (1);
-
 	 /* Close the file if it was opened */
 	if (file)
 	{
 		fclose(file);
 		file = NULL;
 	}
-	free(new_env);
 	free_memory(cmd);
 	return (0);
 }
@@ -118,7 +116,8 @@ void handle_exit(int is_comment, int *exit_status, FILE *file, char *new_env)
 	{
 		fclose(file);
 		file = NULL;
-		free(new_env);
+		if (new_env != NULL)
+			free(new_env), new_env = NULL;
 		exit(*exit_status);
 	}
 
@@ -126,8 +125,8 @@ void handle_exit(int is_comment, int *exit_status, FILE *file, char *new_env)
 	{
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "\n", 1);
-
-		free(new_env);
+		if (new_env != NULL)
+			free(new_env), new_env = NULL;
 		exit(*exit_status);
 	}
 }

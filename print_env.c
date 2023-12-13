@@ -12,7 +12,7 @@
  * Return: 0 on success
  */
 
-int print_env(char **cmd)
+int print_env(char **cmd, char **new_env)
 {
 	unsigned int i = 0;
 
@@ -25,6 +25,7 @@ int print_env(char **cmd)
 
 	/* Free memory allocated for the command */
 	free_memory(cmd);
+	free(*new_env), *new_env = NULL;
 
 	return (0);
 }

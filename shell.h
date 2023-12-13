@@ -75,7 +75,7 @@ int exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx, char **ne
 int handle_env(char **cmd, char **argv, int cmd_idx, char **new_env);
 int handle_cd(char **cmd, char **argv, int cmd_idx, char **new_env);
 
-int print_env(char **cmd);
+int print_env(char **cmd, char **new_env);
 
 int is_positive_num(char *str);
 
