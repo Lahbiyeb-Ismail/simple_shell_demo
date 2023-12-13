@@ -34,7 +34,10 @@ int _setenv(char *envname, char *envval, int overwrite, char **new_env)
 		modify_env(envname, envval, overwrite, new_env);
 
 	if (!*new_env)
+	{
+		free(env_val), env_val = NULL;
 		return (-1);
+	}
 
 	free(env_val), env_val = NULL;
 	return (0);
@@ -69,7 +72,9 @@ void set_new_env(char *envname, char *envval, char **new_env)
 		env_count++;
 
 	/* Construct the environment variable string: "name=value" */
-	construct_env_str(envname, envval, new_env);
+	_strcpy(*new_env, envname);
+	_strcat(*new_env, "=");
+	_strcat(*new_env, envval);
 
 	if (!*new_env)
 		return;
@@ -103,7 +108,9 @@ void modify_env(char *envname, char *envval, int overwrite, char **new_env)
 	int i = 0;
 
 	/* Construct the environment variable string: "name=value" */
-	construct_env_str(envname, envval, new_env);
+	_strcpy(*new_env, envname);
+	_strcat(*new_env, "=");
+	_strcat(*new_env, envval);
 
 	if (!*new_env)
 		return;
@@ -125,36 +132,4 @@ void modify_env(char *envname, char *envval, int overwrite, char **new_env)
 		}
 		i++;
 	}
-}
-
-
-/**
- * construct_env_str - Constructs a formatted string for an env variable.
- *
- * Description:
- * This function dynamically allocates memory to create a string in the format
- * "name=value" for a given environment variable. The caller is responsible for
- * freeing the allocated memory when it is no longer needed.
- *
- * @new_env: Pointer to a char pointer that will store the newly constructed
- * env string.
- * @envname: The name of the environment variable.
- * @envval: The value to be assigned to the environment variable.
- *
- * Return:
- * Returns a pointer to the dynamically allocated string containing the
- * environment variable in the format "name=value". Returns NULL if memory
- * allocation fails.
- */
-
-void construct_env_str(char *envname, char *envval, char **new_env)
-{
-	/* Check if memory allocation was successful */
-	if (!*new_env)
-		return;
-
-	/* Construct the environment variable string: "name=value" */
-	_strcpy(*new_env, envname);
-	_strcat(*new_env, "=");
-	_strcat(*new_env, envval);
 }
