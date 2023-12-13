@@ -28,10 +28,10 @@ int _setenv(char *envname, char *envval, int overwrite, char **new_env)
 
 	/* If the environment variable does not exist */
 	if (!env_val)
-		set_new_env(envname, envval, new_env);
+		*new_env = set_new_env(envname, envval);
 	/* Environment variable already exists, and 'overwrite' flag is set */
 	else if (overwrite)
-		modify_env(envname, envval, overwrite, new_env);
+		*new_env = modify_env(envname, envval, overwrite);
 
 	if (!*new_env)
 	{
@@ -54,8 +54,6 @@ int _setenv(char *envname, char *envval, int overwrite, char **new_env)
  *
  * @envname: The name of the environment variable.
  * @envval: The value to be assigned to the environment variable.
- * @new_env: Pointer to the environment variable (can be updated during
- * command execution).
  *
  * Return:
  * Returns 0 on success, or -1 on failure (memory allocation error or
@@ -63,7 +61,7 @@ int _setenv(char *envname, char *envval, int overwrite, char **new_env)
  *
  */
 
-void set_new_env(char *envname, char *envval, char **new_env)
+char *set_new_env(char *envname, char *envval)
 {
 	int env_count = 0;
 	char *new_env_var = NULL;
@@ -73,18 +71,17 @@ void set_new_env(char *envname, char *envval, char **new_env)
 	while (environ[env_count])
 		env_count++;
 
-
 	/* Construct the environment variable string: "name=value" */
 	new_env_var = construct_env_str(envname, envval);
 
 	if (!new_env_var)
-		return;
+		return (NULL);
 
 	/* Add the new environment variable to the 'environ' array */
 	environ[env_count] = new_env_var;
 	environ[env_count + 1] = NULL;
 
-	*new_env = new_env_var;
+	return (new_env_var);
 }
 
 /**
@@ -98,15 +95,13 @@ void set_new_env(char *envname, char *envval, char **new_env)
  * @envname: The name of the environment variable.
  * @envval: The value to be assigned to the environment variable.
  * @overwrite: Flag indicating whether to overwrite an existing variable.
- * @new_env: Pointer to the environment variable (can be updated during
- * command execution).
  *
  * Return:
  * Returns 0 on success, or -1 on failure (memory allocation error or
  * environment variable not found and 'overwrite' is not set).
  */
 
-void modify_env(char *envname, char *envval, int overwrite, char **new_env)
+char *modify_env(char *envname, char *envval, int overwrite)
 {
 	int i = 0;
 	char *new_env_var = NULL;
@@ -115,7 +110,7 @@ void modify_env(char *envname, char *envval, int overwrite, char **new_env)
 	new_env_var = construct_env_str(envname, envval);
 
 	if (!new_env_var)
-		return;
+		return (NULL);
 
 	while (environ[i])
 	{
@@ -126,12 +121,13 @@ void modify_env(char *envname, char *envval, int overwrite, char **new_env)
 				_unsetenv(environ[i]);
 				/* Modify the existing env variable with the new env */
 				environ[i] = new_env_var;
-				*new_env = new_env_var;
-				return;
+				return (new_env_var);
 			}
 		}
 		i++;
 	}
+
+	return (NULL);
 }
 
 
