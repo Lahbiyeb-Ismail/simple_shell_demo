@@ -34,6 +34,7 @@ int main(int argc, char **argv)
 		if (!file)
 		{
 			print_file_error(argv[0], cmd_idx, argv[1]);
+			free(new_env);
 			exit(2);
 		}
 	}
@@ -43,7 +44,7 @@ int main(int argc, char **argv)
 
 		if (!cmd_line)
 		{
-			handle_exit(is_comment, &exit_status, file);
+			handle_exit(is_comment, &exit_status, file, new_env);
 			free_aliases(aliases);
 			free(new_env);
 			continue;
@@ -111,12 +112,13 @@ char *read_and_handle_comments(int *is_comment, FILE *file, int argc)
  * Return: void
  */
 
-void handle_exit(int is_comment, int *exit_status, FILE *file)
+void handle_exit(int is_comment, int *exit_status, FILE *file, char *new_env)
 {
 	if (file)
 	{
 		fclose(file);
 		file = NULL;
+		free(new_env);
 		exit(*exit_status);
 	}
 
@@ -124,6 +126,8 @@ void handle_exit(int is_comment, int *exit_status, FILE *file)
 	{
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "\n", 1);
+
+		free(new_env);
 		exit(*exit_status);
 	}
 }

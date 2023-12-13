@@ -34,7 +34,7 @@ void print_shell_prompt(void);
 void print_shell_error(char *shell_name, int cmd_idx, char **cmd,
 	char *err_msg);
 
-void handle_exit(int is_comment, int *exit_status, FILE *file);
+void handle_exit(int is_comment, int *exit_status, FILE *file, char *new_env);
 char *read_and_handle_comments(int *is_comment, FILE *file, int argc);
 void handle_command_exec(char **cmd, char *cmd_line, char **argv,
 	int cmd_idx, int *exit_status, Alias **aliases, char **new_env);
