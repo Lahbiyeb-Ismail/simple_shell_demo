@@ -66,22 +66,25 @@ int _setenv(char *envname, char *envval, int overwrite, char **new_env)
 void set_new_env(char *envname, char *envval, char **new_env)
 {
 	int env_count = 0;
+	char *new_env_var = NULL;
+
 
 	/* Find the number of existing environment variables */
 	while (environ[env_count])
 		env_count++;
 
-	/* Construct the environment variable string: "name=value" */
-	_strcpy(*new_env, envname);
-	_strcat(*new_env, "=");
-	_strcat(*new_env, envval);
 
-	if (!*new_env)
+	/* Construct the environment variable string: "name=value" */
+	new_env_var = construct_env_str(envname, envval);
+
+	if (!new_env_var)
 		return;
 
 	/* Add the new environment variable to the 'environ' array */
-	environ[env_count] = *new_env;
+	environ[env_count] = new_env_var;
 	environ[env_count + 1] = NULL;
+
+	*new_env = new_env_var;
 }
 
 /**
@@ -106,13 +109,12 @@ void set_new_env(char *envname, char *envval, char **new_env)
 void modify_env(char *envname, char *envval, int overwrite, char **new_env)
 {
 	int i = 0;
+	char *new_env_var = NULL;
 
 	/* Construct the environment variable string: "name=value" */
-	_strcpy(*new_env, envname);
-	_strcat(*new_env, "=");
-	_strcat(*new_env, envval);
+	new_env_var = construct_env_str(envname, envval);
 
-	if (!*new_env)
+	if (!new_env_var)
 		return;
 
 	while (environ[i])
@@ -123,13 +125,47 @@ void modify_env(char *envname, char *envval, int overwrite, char **new_env)
 			{
 				_unsetenv(environ[i]);
 				/* Modify the existing env variable with the new env */
-				environ[i] = *new_env;
+				environ[i] = new_env_var;
+				*new_env = new_env_var;
 				return;
 			}
-
-			free(*new_env), *new_env = NULL;
-			return;
 		}
 		i++;
 	}
+}
+
+
+/**
+ * construct_env_str - Constructs a formatted string for an env variable.
+ *
+ * Description:
+ * This function dynamically allocates memory to create a string in the format
+ * "name=value" for a given environment variable. The caller is responsible for
+ * freeing the allocated memory when it is no longer needed.
+ *
+ * env string.
+ * @envname: The name of the environment variable.
+ * @envval: The value to be assigned to the environment variable.
+ *
+ * Return:
+ * Returns a pointer to the dynamically allocated string containing the
+ * environment variable in the format "name=value". Returns NULL if memory
+ * allocation fails.
+ */
+
+char *construct_env_str(char *envname, char *envval)
+{
+	char *new_env_var = NULL;
+
+	/* +2 for '=' and '\0' */
+	new_env_var = malloc((_strlen(envname) + _strlen(envval) + 2) * sizeof(char));
+	if (!new_env_var)
+		return (NULL);
+
+	/* Construct the environment variable string: "name=value" */
+	_strcpy(new_env_var, envname);
+	_strcat(new_env_var, "=");
+	_strcat(new_env_var, envval);
+
+	return (new_env_var);
 }

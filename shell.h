@@ -83,6 +83,7 @@ int is_positive_num(char *str);
 int _setenv(char *envname, char *envval, int overwrite, char **new_env);
 void set_new_env(char *envname, char *envval, char **new_env);
 void modify_env(char *envname, char *envval, int overwrite, char **new_env);
+char *construct_env_str(char *envname, char *envval);
 int print_env_error(char **cmd, char *shell_name, int cmd_idx);
 void print_file_error(char *shell_name, int cmd_idx, char *file_name);
 
