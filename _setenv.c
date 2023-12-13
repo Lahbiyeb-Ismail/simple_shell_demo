@@ -27,10 +27,10 @@ int _setenv(char *envname, char *envval, int overwrite, char **new_env)
 
 	/* If the environment variable does not exist */
 	if (!env_val)
-		*new_env = set_new_env(envname, envval);
+		set_new_env(envname, envval, new_env);
 	/* Environment variable already exists, and 'overwrite' flag is set */
 	else if (overwrite)
-		*new_env = modify_env(envname, envval, overwrite);
+		modify_env(envname, envval, overwrite, new_env);
 
 	if (!*new_env)
 		return (-1);
@@ -57,9 +57,8 @@ int _setenv(char *envname, char *envval, int overwrite, char **new_env)
  *
  */
 
-char *set_new_env(char *envname, char *envval)
+void set_new_env(char *envname, char *envval, char **new_env)
 {
-	char *new_env = NULL;
 	int env_count = 0;
 
 	/* Find the number of existing environment variables */
@@ -67,16 +66,14 @@ char *set_new_env(char *envname, char *envval)
 		env_count++;
 
 	/* Construct the environment variable string: "name=value" */
-	new_env = construct_env_str(&new_env, envname, envval);
+	construct_env_str(envname, envval, new_env);
 
-	if (!new_env)
-		return (NULL);
+	if (!*new_env)
+		return;
 
 	/* Add the new environment variable to the 'environ' array */
-	environ[env_count] = new_env;
+	environ[env_count] = *new_env;
 	environ[env_count + 1] = NULL;
-
-	return (new_env);
 }
 
 /**
@@ -96,19 +93,15 @@ char *set_new_env(char *envname, char *envval)
  * environment variable not found and 'overwrite' is not set).
  */
 
-char *modify_env(char *envname, char *envval, int overwrite)
+void modify_env(char *envname, char *envval, int overwrite, char **new_env)
 {
-	char *new_env = NULL;
 	int i = 0;
 
 	/* Construct the environment variable string: "name=value" */
-	new_env = construct_env_str(&new_env, envname, envval);
+	construct_env_str(envname, envval, new_env);
 
-	if (!new_env)
-	{
-		free(new_env);
-		return (NULL);
-	}
+	if (!*new_env)
+		return;
 
 	while (environ[i])
 	{
@@ -117,18 +110,15 @@ char *modify_env(char *envname, char *envval, int overwrite)
 			if (overwrite == 1)
 			{
 				/* Modify the existing env variable with the new env */
-				environ[i] = new_env;
-				return (new_env);
+				environ[i] = *new_env;
+				return;
 			}
 
-			free(new_env), new_env = NULL;
-			return (new_env);
+			free(*new_env), *new_env = NULL;
+			return;
 		}
 		i++;
 	}
-
-	free(new_env), new_env = NULL;
-	return (new_env);
 }
 
 
@@ -151,23 +141,17 @@ char *modify_env(char *envname, char *envval, int overwrite)
  * allocation fails.
  */
 
-char *construct_env_str(char **new_env, char *envname, char *envval)
+void construct_env_str(char *envname, char *envval, char **new_env)
 {
-
 	/* Allocate memory for the new environment variable */
 	*new_env = malloc(_strlen(envname) + _strlen(envval) + 2);
 
 	/* Check if memory allocation was successful */
-	if (!new_env)
-	{
-		free(*new_env);
-		return (NULL);
-	}
+	if (!*new_env)
+		return;
 
 	/* Construct the environment variable string: "name=value" */
 	_strcpy(*new_env, envname);
 	_strcat(*new_env, "=");
 	_strcat(*new_env, envval);
-
-	return (*new_env);
 }
