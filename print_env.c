@@ -9,12 +9,11 @@
  * allocated for the command and the new environment.
  *
  * @cmd: Array of tokens representing the command and its arguments.
- * @new_env: Pointer to the new environment variable (can be NULL).
  *
  * Return: 0 on success
  */
 
-int print_env(char **cmd, char **new_env)
+int print_env(char **cmd)
 {
 	unsigned int i = 0;
 
@@ -28,9 +27,6 @@ int print_env(char **cmd, char **new_env)
 
 	/* Free memory allocated for the command */
 	free_memory(cmd);
-
-	/* Free the memory allocated for the new environment */
-	free(*new_env), *new_env = NULL;
 
 	return (0);
 }
