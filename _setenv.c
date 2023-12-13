@@ -109,6 +109,7 @@ void modify_env(char *envname, char *envval, int overwrite, char **new_env)
 		{
 			if (overwrite == 1)
 			{
+				_unsetenv(environ[i]);
 				/* Modify the existing env variable with the new env */
 				environ[i] = *new_env;
 				return;
@@ -143,15 +144,19 @@ void modify_env(char *envname, char *envval, int overwrite, char **new_env)
 
 void construct_env_str(char *envname, char *envval, char **new_env)
 {
+	char *new_env_cpy = NULL;
 	/* Allocate memory for the new environment variable */
-	*new_env = malloc(_strlen(envname) + _strlen(envval) + 2);
+	new_env_cpy = malloc(_strlen(envname) + _strlen(envval) + 2);
 
 	/* Check if memory allocation was successful */
-	if (!*new_env)
+	if (!new_env_cpy)
 		return;
 
 	/* Construct the environment variable string: "name=value" */
-	_strcpy(*new_env, envname);
-	_strcat(*new_env, "=");
-	_strcat(*new_env, envval);
+	_strcpy(new_env_cpy, envname);
+	_strcat(new_env_cpy, "=");
+	_strcat(new_env_cpy, envval);
+
+	*new_env = _strdup(new_env_cpy);
+	free(new_env_cpy);
 }
