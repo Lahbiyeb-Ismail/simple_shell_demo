@@ -20,6 +20,7 @@ int main(int argc, char **argv)
 {
 	/* Buffer to store the user's input cmd */
 	char *cmd_line = NULL;
+	char *new_env = NULL;
 	/* Array to store the tokens of the cmd */
 	char **cmd = NULL;
 	int exit_status = 0, cmd_idx = 0, is_comment = 0;
@@ -44,10 +45,11 @@ int main(int argc, char **argv)
 		{
 			handle_exit(is_comment, &exit_status, file);
 			free_aliases(aliases);
+			free(new_env);
 			continue;
 		}
 		cmd_idx++;
-		handle_command_exec(cmd, cmd_line, argv, cmd_idx, &exit_status, &aliases);
+		handle_command_exec(cmd, cmd_line, argv, cmd_idx, &exit_status, &aliases, &new_env);
 	} while (1);
 
 	 /* Close the file if it was opened */
@@ -56,6 +58,7 @@ int main(int argc, char **argv)
 		fclose(file);
 		file = NULL;
 	}
+	free(new_env);
 	free_memory(cmd);
 	return (0);
 }
@@ -145,7 +148,7 @@ void handle_exit(int is_comment, int *exit_status, FILE *file)
  */
 
 void handle_command_exec(char **cmd, char *cmd_line, char **argv,
-	int cmd_idx, int *exit_status, Alias **aliases)
+	int cmd_idx, int *exit_status, Alias **aliases, char **new_env)
 {
 	char *operator = NULL;
 
@@ -153,12 +156,12 @@ void handle_command_exec(char **cmd, char *cmd_line, char **argv,
 
 	if (operator)
 		handle_operators(argv, cmd_line,
-			operator, exit_status, cmd_idx, aliases);
+			operator, exit_status, cmd_idx, aliases, new_env);
 	else
 	{
 		cmd = tokenize_command(cmd_line, " \t\n");
 		if (!cmd)
 			return;
-		process_command(cmd, argv, cmd_idx, exit_status, aliases);
+		process_command(cmd, argv, cmd_idx, exit_status, aliases, new_env);
 	}
 }

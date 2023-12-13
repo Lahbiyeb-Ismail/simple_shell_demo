@@ -37,7 +37,7 @@ void print_shell_error(char *shell_name, int cmd_idx, char **cmd,
 void handle_exit(int is_comment, int *exit_status, FILE *file);
 char *read_and_handle_comments(int *is_comment, FILE *file, int argc);
 void handle_command_exec(char **cmd, char *cmd_line, char **argv,
-	int cmd_idx, int *exit_status, Alias **aliases);
+	int cmd_idx, int *exit_status, Alias **aliases, char **new_env);
 
 char *read_command(FILE *stream, int argc);
 char **tokenize_command(char *cmd, char *delim);
@@ -45,12 +45,12 @@ size_t tokens_count(char *cmd_line, char *delim);
 char **tokens_array(size_t count, char *cmd_line, char *delim, char *token);
 int exec_command(char **cmd, char **argv, int cmd_idx, int *exit_status);
 void process_command(char **cmd, char **argv, int cmd_idx, int *exit_status,
-	Alias **aliases);
+	Alias **aliases, char **new_env);
 char *get_cmd_path(char **cmd, char **argv, int cmd_idx);
 void child_process_exec(char *cmd_path, char **cmd);
 void parent_process_exec(pid_t pid, char **cmd, char *cmd_path, int *status);
 void handle_operators(char **argv, char *cmd_line,
-	char *operator, int *exit_status, int cmd_idx, Alias **aliases);
+	char *operator, int *exit_status, int cmd_idx, Alias **aliases, char **new_env);
 
 char *_getenv(char *name);
 char *_getpath(char *cmd);
@@ -70,29 +70,28 @@ int _atoi(char *s);
 
 int check_if_builtin_cmd(char *cmd);
 int handle_builtin_cmd(char **cmd, char **argv, int *exit_status,
-	int cmd_idx, Alias **aliases);
-int exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx,
-	Alias **aliases);
-int handle_env(char **cmd, char **argv, int cmd_idx);
-int handle_cd(char **cmd, char **argv, int cmd_idx);
+	int cmd_idx, Alias **aliases, char **new_env);
+int exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx, char **new_env);
+int handle_env(char **cmd, char **argv, int cmd_idx, char **new_env);
+int handle_cd(char **cmd, char **argv, int cmd_idx, char **new_env);
 
 int print_env(char **cmd);
 
 int is_positive_num(char *str);
 
-int _setenv(char *envname, char *envval, int overwrite);
-int set_new_env(char *envname, char *envval);
-int modify_env(char *envname, char *envval, int overwrite);
+int _setenv(char *envname, char *envval, int overwrite, char **new_env);
+char *set_new_env(char *envname, char *envval);
+char *modify_env(char *envname, char *envval, int overwrite);
 char *construct_env_str(char **new_env, char *envname, char *envval);
 int print_env_error(char **cmd, char *shell_name, int cmd_idx);
 void print_file_error(char *shell_name, int cmd_idx, char *file_name);
 
 int _unsetenv(char *envname);
 
-int change_dir(char **cmd);
-char *cd_home(char *curr_dir, char *home_val);
-char *cd_prev(char *curr_dir, char *old_pwd_val);
-char *cd_to(char *path, char *curr_dir);
+int change_dir(char **cmd, char **new_env);
+char *cd_home(char *curr_dir, char *home_val, char **new_env);
+char *cd_prev(char *curr_dir, char *old_pwd_val, char **new_env);
+char *cd_to(char *path, char *curr_dir, char **new_env);
 void free_cd_memory(char *curr_dir, char *old_pwd, char *home_env);
 
 char *check_for_operator(char *cmd_line);

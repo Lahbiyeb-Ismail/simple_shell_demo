@@ -11,7 +11,7 @@
  * Return: The updated exit status after executing the built-in command.
  */
 
-int change_dir(char **cmd)
+int change_dir(char **cmd, char **new_env)
 {
 	int status = 0;
 	char *dir = NULL;
@@ -37,11 +37,11 @@ int change_dir(char **cmd)
 	}
 
 	if (!cmd[1])
-		dir = cd_home(curr_dir, home_val);
+		dir = cd_home(curr_dir, home_val, new_env);
 	else if (_strcmp(cmd[1], "-") == 0)
-		dir = cd_prev(curr_dir, old_pwd_val);
+		dir = cd_prev(curr_dir, old_pwd_val, new_env);
 	else
-		dir = cd_to(cmd[1], curr_dir);
+		dir = cd_to(cmd[1], curr_dir, new_env);
 
 	status = chdir(dir);
 
@@ -64,7 +64,7 @@ int change_dir(char **cmd)
  * Returns a pointer to the user's home dir on success, or NULL on failure.
  */
 
-char *cd_home(char *curr_dir, char *home_val)
+char *cd_home(char *curr_dir, char *home_val, char **new_env)
 {
 	char *dir = NULL;
 
@@ -73,16 +73,16 @@ char *cd_home(char *curr_dir, char *home_val)
 	{
 		dir = curr_dir;
 		/* Update the environment variables 'PWD' and 'OLDPWD' */
-		_setenv("PWD", dir, 1);
-		_setenv("OLDPWD", dir, 1);
+		_setenv("PWD", dir, 1, new_env);
+		_setenv("OLDPWD", dir, 1, new_env);
 	}
 	/* Set the target directory to the user's Home dir */
 	else
 	{
 		dir = home_val;
 		/* Update the environment variables 'PWD' and 'OLDPWD' */
-		_setenv("PWD", dir, 1);
-		_setenv("OLDPWD", curr_dir, 1);
+		_setenv("PWD", dir, 1, new_env);
+		_setenv("OLDPWD", curr_dir, 1, new_env);
 	}
 
 	return (dir);
@@ -103,7 +103,7 @@ char *cd_home(char *curr_dir, char *home_val)
  * Return: A pointer to the prev working dir on success, or NULL on failure.
  */
 
-char *cd_prev(char *curr_dir, char *old_pwd_val)
+char *cd_prev(char *curr_dir, char *old_pwd_val, char **new_env)
 {
 
 	char *dir = NULL;
@@ -116,8 +116,8 @@ char *cd_prev(char *curr_dir, char *old_pwd_val)
 	write(STDOUT_FILENO, "\n", 1);
 
 	/* Update the environment variables 'PWD' and 'OLDPWD' */
-	_setenv("PWD", dir, 1);
-	_setenv("OLDPWD", curr_dir, 1);
+	_setenv("PWD", dir, 1, new_env);
+	_setenv("OLDPWD", curr_dir, 1, new_env);
 
 	return (dir);
 }
@@ -135,14 +135,14 @@ char *cd_prev(char *curr_dir, char *old_pwd_val)
  * Return: A pointer to the specified path on success, or NULL on failure.
  */
 
-char *cd_to(char *path, char *curr_dir)
+char *cd_to(char *path, char *curr_dir, char **new_env)
 {
 	char *dir = path;
 
 	/* Update the environment variable 'OLDPWD' */
-	_setenv("OLDPWD", _getenv("PWD"), 1);
+	_setenv("OLDPWD", _getenv("PWD"), 1, new_env);
 	/* Set the current working directory to the specified path */
-	_setenv("PWD", curr_dir, 1);
+	_setenv("PWD", curr_dir, 1, new_env);
 
 	return  (dir);
 }

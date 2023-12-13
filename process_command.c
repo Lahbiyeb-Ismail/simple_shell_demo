@@ -25,14 +25,14 @@
  */
 
 void process_command(char **cmd, char **argv, int cmd_idx, int *exit_status,
-	Alias **aliases)
+	Alias **aliases, char **new_env)
 {
 	int status = (*exit_status);
 
 	handle_var_replacement(cmd, status);
 
 	if (check_if_builtin_cmd(cmd[0]))
-		(*exit_status) = handle_builtin_cmd(cmd, argv, &status, cmd_idx, aliases);
+		(*exit_status) = handle_builtin_cmd(cmd, argv, &status, cmd_idx, aliases, new_env);
 	else
 	/* Execute the command and get the exit status */
 		(*exit_status) = exec_command(cmd, argv, cmd_idx, &status);

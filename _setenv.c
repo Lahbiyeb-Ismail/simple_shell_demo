@@ -19,23 +19,24 @@
  */
 
 /* TODO: FIX MEMORY ALLOCATION LEAK*/
-int _setenv(char *envname, char *envval, int overwrite)
+int _setenv(char *envname, char *envval, int overwrite, char **new_env)
 {
 	char *env_val = NULL;
-	int status;
 
 	env_val = _getenv(envname);
 
 	/* If the environment variable does not exist */
 	if (!env_val)
-		status = set_new_env(envname, envval);
+		*new_env = set_new_env(envname, envval);
 	/* Environment variable already exists, and 'overwrite' flag is set */
 	else if (overwrite)
-		status = modify_env(envname, envval, overwrite);
+		*new_env = modify_env(envname, envval, overwrite);
 
+	if (!*new_env)
+		return (-1);
 
 	free(env_val), env_val = NULL;
-	return (status);
+	return (0);
 }
 
 /**
@@ -56,7 +57,7 @@ int _setenv(char *envname, char *envval, int overwrite)
  *
  */
 
-int set_new_env(char *envname, char *envval)
+char *set_new_env(char *envname, char *envval)
 {
 	char *new_env = NULL;
 	int env_count = 0;
@@ -69,13 +70,13 @@ int set_new_env(char *envname, char *envval)
 	new_env = construct_env_str(&new_env, envname, envval);
 
 	if (!new_env)
-		return (-1);
+		return (NULL);
 
 	/* Add the new environment variable to the 'environ' array */
 	environ[env_count] = new_env;
 	environ[env_count + 1] = NULL;
 
-	return (0);
+	return (new_env);
 }
 
 /**
@@ -95,7 +96,7 @@ int set_new_env(char *envname, char *envval)
  * environment variable not found and 'overwrite' is not set).
  */
 
-int modify_env(char *envname, char *envval, int overwrite)
+char *modify_env(char *envname, char *envval, int overwrite)
 {
 	char *new_env = NULL;
 	int i = 0;
@@ -106,7 +107,7 @@ int modify_env(char *envname, char *envval, int overwrite)
 	if (!new_env)
 	{
 		free(new_env);
-		return (-1);
+		return (NULL);
 	}
 
 	while (environ[i])
@@ -117,17 +118,17 @@ int modify_env(char *envname, char *envval, int overwrite)
 			{
 				/* Modify the existing env variable with the new env */
 				environ[i] = new_env;
-				return (0);
+				return (new_env);
 			}
 
 			free(new_env), new_env = NULL;
-			return (0);
+			return (new_env);
 		}
 		i++;
 	}
 
 	free(new_env), new_env = NULL;
-	return (-1);
+	return (new_env);
 }
 
 

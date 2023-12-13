@@ -16,21 +16,21 @@
  */
 
 int handle_builtin_cmd(char **cmd, char **argv, int *status, int cmd_idx,
-	Alias **aliases)
+	Alias **aliases, char **new_env)
 {
 	int exit_status = (*status);
 
 	/* Check if the command is the "exit" built-in command */
 	if (_strcmp(cmd[0], "exit") == 0)
-		exit_status = exit_shell(cmd, argv, status, cmd_idx, aliases);
+		exit_status = exit_shell(cmd, argv, status, cmd_idx, new_env);
 	/* Check if the command is the "env" built-in command */
 	else if (_strcmp(cmd[0], "env") == 0)
 		exit_status = print_env(cmd);
 		/* Check if the command is the "setenv" or "unsetenv" built-in command */
 	else if (_strcmp(cmd[0], "setenv") == 0 || _strcmp(cmd[0], "unsetenv") == 0)
-		exit_status = handle_env(cmd, argv, cmd_idx);
+		exit_status = handle_env(cmd, argv, cmd_idx, new_env);
 	else if (_strcmp(cmd[0], "cd") == 0)
-		exit_status = handle_cd(cmd, argv, cmd_idx);
+		exit_status = handle_cd(cmd, argv, cmd_idx, new_env);
 	else if (_strcmp(cmd[0], "alias") == 0)
 	{
 		exit_status = handle_alias_command(cmd, aliases);
@@ -57,7 +57,7 @@ int handle_builtin_cmd(char **cmd, char **argv, int *status, int cmd_idx,
  * Return: The exit status after handling the environment command.
  */
 
-int handle_env(char **cmd, char **argv, int cmd_idx)
+int handle_env(char **cmd, char **argv, int cmd_idx, char **new_env)
 {
 	int exit_status;
 
@@ -72,7 +72,7 @@ int handle_env(char **cmd, char **argv, int cmd_idx)
 		return (exit_status);
 	}
 	if (_strcmp(cmd[0], "setenv") == 0)
-		exit_status = _setenv(cmd[1], cmd[2], 1);
+		exit_status = _setenv(cmd[1], cmd[2], 1, new_env);
 	else if (_strcmp(cmd[0], "unsetenv") == 0)
 		exit_status = _unsetenv(cmd[1]);
 
@@ -98,11 +98,11 @@ int handle_env(char **cmd, char **argv, int cmd_idx)
  * 2: Error (failed to change directory)
  */
 
-int handle_cd(char **cmd, char **argv, int cmd_idx)
+int handle_cd(char **cmd, char **argv, int cmd_idx, char **new_env)
 {
 	int exit_status = 0;
 
-	exit_status = change_dir(cmd);
+	exit_status = change_dir(cmd, new_env);
 
 	if (exit_status == -1)
 	{
