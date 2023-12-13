@@ -13,12 +13,13 @@
  * @envname: The name of the environment variable.
  * @envval: The value to be assigned to the environment variable.
  * @overwrite: The value to be assigned to the environment variable.
+ * @new_env: Pointer to the environment variable (can be updated during
+ * command execution).
  *
  * Return: Returns 0 on success, or -1 on error,
  *
  */
 
-/* TODO: FIX MEMORY ALLOCATION LEAK*/
 int _setenv(char *envname, char *envval, int overwrite, char **new_env)
 {
 	char *env_val = NULL;
@@ -50,6 +51,8 @@ int _setenv(char *envname, char *envval, int overwrite, char **new_env)
  *
  * @envname: The name of the environment variable.
  * @envval: The value to be assigned to the environment variable.
+ * @new_env: Pointer to the environment variable (can be updated during
+ * command execution).
  *
  * Return:
  * Returns 0 on success, or -1 on failure (memory allocation error or
@@ -87,6 +90,8 @@ void set_new_env(char *envname, char *envval, char **new_env)
  * @envname: The name of the environment variable.
  * @envval: The value to be assigned to the environment variable.
  * @overwrite: Flag indicating whether to overwrite an existing variable.
+ * @new_env: Pointer to the environment variable (can be updated during
+ * command execution).
  *
  * Return:
  * Returns 0 on success, or -1 on failure (memory allocation error or

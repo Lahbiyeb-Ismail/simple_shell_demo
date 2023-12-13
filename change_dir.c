@@ -7,6 +7,8 @@
  * command and executes the corresponding action.
  *
  * @cmd: Array of tokens representing the command and its arguments.
+ * @new_env: Pointer to the environment variable (can be updated during
+ * command execution).
  *
  * Return: The updated exit status after executing the built-in command.
  */
@@ -59,6 +61,8 @@ int change_dir(char **cmd, char **new_env)
  *
  * @curr_dir: The current working dir before changing to the home directory.
  * @home_val: The user's home (root) working directory.
+ * @new_env: Pointer to the environment variable (can be updated during
+ * command execution).
  *
  * Return:
  * Returns a pointer to the user's home dir on success, or NULL on failure.
@@ -99,6 +103,8 @@ char *cd_home(char *curr_dir, char *home_val, char **new_env)
  *
  * @curr_dir: The current working dir before changing to the previous dir.
  * @old_pwd_val: The value of the 'OLDPWD' environment variable.
+ * @new_env: Pointer to the environment variable (can be updated during
+ * command execution).
  *
  * Return: A pointer to the prev working dir on success, or NULL on failure.
  */
@@ -131,6 +137,8 @@ char *cd_prev(char *curr_dir, char *old_pwd_val, char **new_env)
  *
  * @path: The target path to change the current working directory to.
  * @curr_dir: The current working directory before the change.
+ * @new_env: Pointer to the environment variable (can be updated during
+ * command execution).
  *
  * Return: A pointer to the specified path on success, or NULL on failure.
  */

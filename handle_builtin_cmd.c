@@ -11,6 +11,8 @@
  * @status: pointer to the exit status of the previous command.
  * @cmd_idx: The index of the command in the shell's command history.
  * @aliases: A pointer to the head of the linked list containing the aliases.
+ * @new_env: Pointer to the environment variable (can be updated during
+ * command execution).
  *
  * Return: The updated exit status after executing the built-in command.
  */
@@ -53,6 +55,8 @@ int handle_builtin_cmd(char **cmd, char **argv, int *status, int cmd_idx,
  * @cmd: Array of tokens representing the command and its arguments.
  * @argv: An array of strings representing the command-line arguments.
  * @cmd_idx: The index of the command in the shell's command history.
+ * @new_env: Pointer to the environment variable (can be updated during
+ * command execution).
  *
  * Return: The exit status after handling the environment command.
  */
@@ -92,6 +96,8 @@ int handle_env(char **cmd, char **argv, int cmd_idx, char **new_env)
  * @cmd: Array of strings representing the 'cd' command and its arguments.
  * @argv: Array of strings representing the cmd_line arguments of the shell.
  * @cmd_idx: Index of the 'cd' command in the 'argv' array.
+ * @new_env: Pointer to the environment variable (can be updated during
+ * command execution).
  *
  * Return: An integer representing the exit status of the 'cd' command.
  * 0: Success

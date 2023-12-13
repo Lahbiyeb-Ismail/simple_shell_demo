@@ -49,8 +49,8 @@ void process_command(char **cmd, char **argv, int cmd_idx, int *exit_status,
 char *get_cmd_path(char **cmd, char **argv, int cmd_idx);
 void child_process_exec(char *cmd_path, char **cmd);
 void parent_process_exec(pid_t pid, char **cmd, char *cmd_path, int *status);
-void handle_operators(char **argv, char *cmd_line,
-	char *operator, int *exit_status, int cmd_idx, Alias **aliases, char **new_env);
+void handle_operators(char **argv, char *cmd_line, char *operator,
+	int *exit_status, int cmd_idx, Alias **aliases, char **new_env);
 
 char *_getenv(char *name);
 char *_getpath(char *cmd);
@@ -71,7 +71,8 @@ int _atoi(char *s);
 int check_if_builtin_cmd(char *cmd);
 int handle_builtin_cmd(char **cmd, char **argv, int *exit_status,
 	int cmd_idx, Alias **aliases, char **new_env);
-int exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx, char **new_env);
+int exit_shell(char **cmd, char **argv, int *exit_status, int cmd_idx,
+	char **new_env);
 int handle_env(char **cmd, char **argv, int cmd_idx, char **new_env);
 int handle_cd(char **cmd, char **argv, int cmd_idx, char **new_env);
 

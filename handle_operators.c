@@ -24,6 +24,8 @@
  * the function.
  * @cmd_idx: Index of the command in the token array.
  * @aliases: A pointer to the head of the linked list containing the aliases.
+ * @new_env: Pointer to the environment variable (can be updated during
+ * command execution).
  *
  */
 
